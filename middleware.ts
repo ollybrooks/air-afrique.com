@@ -14,16 +14,24 @@ export async function middleware(req: NextRequest) {
     return
   }
  
-  // Get locale from cookie or use 'fr' as fallback
+  // Check if the URL already has the English locale
+  if (req.nextUrl.pathname.startsWith('/en')) {
+    return
+  }
+
+  // Get locale from cookie
   const locale = req.cookies.get('NEXT_LOCALE')?.value || 'fr'
   
-  // Only redirect if the current locale doesn't match the desired locale
-  if (req.nextUrl.locale !== locale) {
+  if (locale === 'en') {
+    // Only redirect to /en if English is selected
     const pathname = req.nextUrl.pathname || ''
     const search = req.nextUrl.search || ''
- 
+    
     return NextResponse.redirect(
-      new URL(`/${locale}${pathname}${search}`, req.url)
+      new URL(`/en${pathname}${search}`, req.url)
     )
   }
+
+  // For French (default), don't add any prefix
+  return
 }
