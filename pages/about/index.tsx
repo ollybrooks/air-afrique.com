@@ -61,7 +61,7 @@ export default function About({ data }: { data: any }) {
         }}
         onClick={handleClick}
       >
-        <div className="fixed top-0 left-0 w-full h-full overflow-hidden border border-sky-500">
+        <div className="fixed top-0 left-0 w-full h-full overflow-hidden">
           {images.map((image, index) => (
             <img 
               key={index}

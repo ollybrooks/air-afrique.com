@@ -18,7 +18,7 @@ export default function Editorial({ articles }: { articles: any }) {
           <div>
             <div className="text-4xl font-medium uppercase title">{articles[0].title}</div>
             <br/>
-            <button className="text-sm uppercase font-medium text-[var(--red)]">Read More</button>
+            <Link href={`/editorial/${articles[0].slug}`} className="text-sm uppercase font-medium text-[var(--red)]">Read More</Link>
           </div>
           <div>
             <img src={articles[0].images[0].url} alt={articles[0].title} />
