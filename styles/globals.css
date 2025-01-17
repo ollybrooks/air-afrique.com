@@ -2,20 +2,140 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@font-face {
+  font-family: 'Eurostile';
+  src: url('/font/EurostileLTStd-Bold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --background: #ffffff;
+  --foreground: #000000;
+  --yellow: rgba(255, 243, 73, 1);
+  --green: rgba(0, 144, 53, 1);
+  --red: rgba(219, 0, 4, 1);
+}
+
+*::-webkit-scrollbar {
+  display: none;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+main {
+  @apply px-6 py-24;
+}
+
+nav {
+  @apply fixed z-30 top-0 left-0 w-full p-6 flex flex-wrap justify-center items-center gap-4 md:gap-12 text-xl md:text-3xl pointer-events-none;
+
+  > * {
+    @apply pointer-events-auto;
+  }
+}
+
+/**/
+
+/* a {
+  @apply underline;
+} */
+
+/**/
+
+/* button {
+  @apply bg-gray-200 px-1 rounded;
+
+  &:hover {
+    @apply bg-gray-300;
+  }
+} */
+
+.title {
+  font-family: 'Eurostile', sans-serif;
+  font-weight: bold;
+}
+
+.serif {
+  font-family: "Times", "Times New Roman", serif;
+}
+
+.futura {
+  font-family: "Futura", "Futura New", sans-serif;
+}
+
+/**/
+
+.menu {
+  @apply fixed top-0 left-0 z-20 h-screen w-full p-6 flex items-center justify-center bg-white bg-opacity-20 backdrop-blur-lg;
+
+  &.transparent {
+    @apply bg-transparent backdrop-blur-none pointer-events-none;
+  }
+
+  &.hide {
+    @apply hidden pointer-events-none select-none;
+  }
+}
+
+.menu-section {
+  @apply fixed top-0 left-0 h-screen w-full p-6 flex items-center justify-center;
+}
+
+.cart {
+  @apply fixed top-0 right-0 z-20 h-screen w-full p-6 pt-24 flex items-start justify-center gap-4 text-xl;
+
+  .modal {
+    @apply bg-white bg-opacity-30 backdrop-blur-lg w-full max-w-xs rounded-xl p-8 overflow-hidden;
+  }
+}
+
+.interlude {
+  @apply fixed top-0 left-0 z-40 h-screen w-full p-6 md:p-24 flex items-center justify-center bg-black bg-opacity-90 backdrop-blur-sm text-white;
+
+  img {
+    @apply w-full h-full object-contain;
+  }
+}
+
+.tint {
+  @apply w-full h-full absolute top-0 left-0 pointer-events-none select-none opacity-50;
+}
+
+.shop {
+  @apply w-full grid grid-cols-3 gap-24 px-4;
+}
+
+.page {
+  @apply fixed top-0 left-0 px-6 w-full h-screen grid grid-cols-3 gap-6;
+}
+
+.editorial {
+  @apply w-full;
+
+  .hero {
+    @apply w-full h-screen -mt-24 grid grid-cols-3 gap-24 items-center;
+  }
+
+  .index {
+    @apply w-screen -ml-6 grid grid-cols-2;
+  }
+}
+
+.additional {
+  @apply w-full font-medium p-6;
+
+  > div {
+    @apply w-full max-w-3xl mx-auto text-lg;
+  }
+}
+
+.loader {
+  @apply fixed top-0 left-0 z-50 w-full h-screen flex items-center justify-center;
 }
