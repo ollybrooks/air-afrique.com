@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useTime } from "../context/time";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { getArticles } from "../sanity/utils";
+import client from "@/shopify/client";
 
 export default function Menu() {
 
@@ -52,14 +53,36 @@ export default function Menu() {
   }, [visitTime]);
 
   const [articleCount, setArticleCount] = useState("000");
+  const [productCount, setProductCount] = useState("000");
 
   useEffect(() => {
     const fetchArticleCount = async () => {
-      const articles = await getArticles(locale);
-      setArticleCount(articles.length.toString().padStart(3, '0'));
+      try {
+        const response = await fetch(`/api/article-count?locale=${locale}`);
+        const data = await response.json();
+        setArticleCount(data.count.toString().padStart(3, '0'));
+      } catch (error) {
+        console.error('Error fetching article count:', error);
+        setArticleCount('000');
+      }
     };
     
     fetchArticleCount();
+  }, [locale]);
+
+  useEffect(() => {
+    const fetchProductCount = async () => {
+      try {
+        const response = await fetch('/api/product-count');
+        const data = await response.json();
+        setProductCount(data.count.toString().padStart(3, '0'));
+      } catch (error) {
+        console.error('Error fetching product count:', error);
+        setProductCount('000');
+      }
+    };
+    
+    fetchProductCount();
   }, [locale]);
 
   return(
@@ -104,7 +127,7 @@ export default function Menu() {
             </div>
             <div>
               <div>{timeElapsed}</div>
-              <div>000</div>
+              <div>{productCount}</div>
               <div>{articleCount}</div>
             </div>
           </div>
