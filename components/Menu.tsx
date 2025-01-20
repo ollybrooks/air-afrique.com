@@ -89,7 +89,7 @@ export default function Menu() {
     <div className={`menu`}>
       <Tint />
 
-      <div className="relative flex w-full justify-around text-3xl">
+      <div className="relative z-10 flex flex-col md:flex-row w-full h-3/4 items-center justify-around text-xl md:text-3xl">
         <div>
           <Link href="/shop">{t.menu.shop}</Link>
         </div>
@@ -101,13 +101,13 @@ export default function Menu() {
         </div>
       </div>
 
-      <div className="absolute top-0 right-0 p-6 text-3xl pointer-events-auto">
+      <div className="absolute z-10 bottom-8 md:bottom-auto md:top-0 right-0 p-4 md:p-6 text-xl md:text-3xl pointer-events-auto">
         <LanguageSwitcher />
       </div>
 
-      <div className="absolute bottom-0 left-0 w-full p-4 flex justify-between items-end text-sm font-medium">
-        <div className="flex gap-8 uppercase">
-          <div className="grid grid-cols-[auto_auto] gap-4">
+      <div className="absolute bottom-0 left-0 w-full h-full md:h-auto p-4 pt-20 flex flex-col md:flex-row justify-between items-end text-[8px] md:text-sm font-medium">
+        <div className="flex gap-8 justify-between md:justify-start uppercase w-full md:w-auto">
+          <div className="grid grid-cols-[auto_auto] gap-4 whitespace-nowrap">
             <div>
               <div>Date</div>
               <div>Local Time at Origin</div>
@@ -119,7 +119,7 @@ export default function Menu() {
               <div>{new Date().toLocaleTimeString('en-GB', {hour: 'numeric', minute: 'numeric', second: 'numeric', timeZone: 'CET'})} CET</div>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4 whitespace-nowrap">
             <div>
               <div>Time Elapsed</div>
               <div>Products</div>
@@ -132,20 +132,20 @@ export default function Menu() {
             </div>
           </div>
         </div>
-        <div className="pointer-events-auto flex gap-8">
-          <div>
+        <div className="pointer-events-auto flex gap-8 w-full md:w-auto pb-8 md:pb-0">
+          <div className="max-w-[110px] md:max-w-[960px]">
             <div>DISTRIBUTION</div>
             <div>KD PRESSE</div>
             <div>contact@kdpresse.com</div>
             <div>101 rue du Faubourg Saint Denis 75010, Paris FR</div>
           </div>
-          <div>
+          <div className="max-w-[110px] md:max-w-[960px]">
             <div>AIR AFRIQUE</div>
             <div>Bienvenue à Bord SAS</div>
             <div>contact@air-afrique.com</div>
             <div>9 rue des colonnes 75002, Paris FR</div>
           </div>
-          <div className="uppercase">
+          <div className="uppercase w-full md:w-auto absolute md:relative bottom-0 left-0 flex flex-row md:flex-col gap-4 p-4 md:p-0 md:gap-0 justify-between md:justify-start whitespace-nowrap">
             <div>
               <a href="https://www.instagram.com/airafrique_" target="_blank" rel="noopener noreferrer">Instagram</a>
             </div>

@@ -1,14 +1,11 @@
-import DevPanel from "@/components/DevPanel";
 import Layout from "@/components/Layout";
 import Loader from "@/components/Loader";
 import MenuSection from "@/components/sections/Menu";
 import { getGeneral } from "@/sanity/utils";
-import { useRouter } from "next/router";
 
-export default function Home({ general, products }: { general: any, products?: any }) {
-
+export default function Home({ general }: { general: any }) {
   return (
-    <Layout>
+    <Layout metadata={general}>
       <Loader/>
       <MenuSection />
     </Layout>
@@ -17,7 +14,6 @@ export default function Home({ general, products }: { general: any, products?: a
 
 export const getStaticProps = async (context: any) => {
   const { locale } = context;
-
   const general = await getGeneral(locale);
 
   return {

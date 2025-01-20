@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
   i18n: {
     locales: ['en', 'fr'],
     defaultLocale: 'fr',
-    // localeDetection: false,
+    localeDetection: false,
     // localePath: path.resolve('./locales'),
   },
   images: {

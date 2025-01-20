@@ -1,9 +1,9 @@
 import Layout from "@/components/Layout";
-import { getAbout } from "@/sanity/utils";
+import { getAbout, getGeneral } from "@/sanity/utils";
 import { PortableText } from "@portabletext/react";
 import { useState } from "react";
 
-export default function About({ data }: { data: any }) {
+export default function About({ data, general }: { data: any, general: any }) {
 
   const [colour, setColour] = useState("var(--red)");
   const [images, setImages] = useState<{ x: number, y: number }[]>([]);
@@ -53,7 +53,7 @@ export default function About({ data }: { data: any }) {
   }
 
   return(
-    <Layout>
+    <Layout metadata={general}>
       <div 
         className={`absolute top-0 left-0 w-full min-h-screen pt-24`}
         style={{
@@ -75,23 +75,23 @@ export default function About({ data }: { data: any }) {
             />
           ))}
         </div>
-        <div className="relative text-center text-4xl font-medium max-w-5xl mx-auto select-none mt-48">
+        <div className="relative text-center text-xl md:text-4xl font-medium max-w-5xl mx-auto select-none mt-48 px-4 md:px-0">
           <PortableText value={data.content} />
         </div>
-        <div className="relative flex flex-col gap-8 my-36 text-center items-center select-none">
-          <div className="text-4xl font-medium uppercase">Team</div>
+        <div className="relative flex flex-col gap-4 md:gap-8 my-36 text-center items-center select-none">
+          <div className="text-xl md:text-4xl font-medium uppercase">Team</div>
           {data.team.map((item: any) => (
             item.link ? (
               <a href={item.link} key={item.name}>
                 <div>
-                  <p className="uppercase text-xl">{item.title}</p>
-                  <p className="font-medium text-[28px]">{item.name}</p>
+                  <p className="uppercase text-xs md:text-xl">{item.title}</p>
+                  <p className="font-medium text-base md:text-3xl">{item.name}</p>
                 </div>
               </a>
             ) : (
               <div key={item.name}>
-                <p className="uppercase text-xl">{item.title}</p>
-                <p className="font-medium text-3xl">{item.name}</p>
+                <p className="uppercase text-xs md:text-xl">{item.title}</p>
+                <p className="font-medium text-base md:text-3xl">{item.name}</p>
               </div>
             )
           ))}
@@ -105,7 +105,9 @@ export default function About({ data }: { data: any }) {
 export async function getStaticProps(context: any) {
   const { locale } = context;
   const data = await getAbout(locale)
+  const general = await getGeneral(locale);
   return {
-    props: { data }
+    props: { data, general },
+    revalidate: 60
   }
 }

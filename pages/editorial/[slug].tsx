@@ -1,5 +1,5 @@
 import { GetStaticProps, GetStaticPaths } from 'next'
-import { getArticles } from '@/sanity/utils'
+import { getArticles, getGeneral } from '@/sanity/utils'
 import { PortableText } from '@portabletext/react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
@@ -20,9 +20,10 @@ interface Article {
 
 interface Props {
   article: Article
+  general: any
 }
 
-export default function ArticlePage({ article }: Props) {
+export default function ArticlePage({ article, general }: Props) {
   const router = useRouter()
   const locale = router.locale || 'fr'
   
@@ -69,7 +70,7 @@ export default function ArticlePage({ article }: Props) {
   }
 
   return (
-    <Layout>
+    <Layout metadata={general}>
       <div className="page">
         <div className="pt-24">
           <h1 className="text-3xl font-bold uppercase title">{article.title}</h1>
@@ -132,9 +133,12 @@ export const getStaticPaths: GetStaticPaths = async ({ locales = ['fr', 'en'] })
   }
 }
 
-export const getStaticProps: GetStaticProps = async ({ params, locale = 'fr' }) => {
+export const getStaticProps: GetStaticProps = async (context: any) => {
+  const { locale } = context;
+  const { params } = context;
   if (!params?.slug) return { notFound: true }
 
+  const general = await getGeneral(locale);
   const articles = await getArticles(locale)
   const article = articles.find((a: Article) => a.slug === params.slug)
 
@@ -142,7 +146,8 @@ export const getStaticProps: GetStaticProps = async ({ params, locale = 'fr' }) 
 
   return {
     props: {
-      article
+      article,
+      general
     }
   }
 }

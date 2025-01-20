@@ -1,8 +1,9 @@
 import Layout from "@/components/Layout";
+import { getGeneral } from "@/sanity/utils";
 import client from "@/shopify/client";
 import Link from "next/link";
 
-export default function Shop({ products }: { products: any[] }) {
+export default function Shop({ products, general }: { products: any[], general: any }) {
 
   console.log(products);
 
@@ -25,7 +26,7 @@ export default function Shop({ products }: { products: any[] }) {
   ]
 
   return(
-    <Layout>
+    <Layout metadata={general}>
       <div className="shop">
         {products.map((item, index) => (
           <Link 
@@ -45,12 +46,16 @@ export default function Shop({ products }: { products: any[] }) {
   );
 }
 
-export async function getStaticProps() {
+export async function getStaticProps(context: any) {
+  const { locale } = context;
+  const general = await getGeneral(locale);
   const products = await client.product.fetchAll();
 
   return {
     props: { 
+      general,
       products: JSON.parse(JSON.stringify(products))
-    }
+    },
+    revalidate: 60
   };
 }

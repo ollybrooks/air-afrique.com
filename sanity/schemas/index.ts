@@ -4,6 +4,7 @@ import general from "./general-schema";
 import about from "./about-schema";
 import additional from "./additional-schema";
 import article from "./article-schema";
+import localeTextType from "./localeTextType";
 
 const schemas = [
   general,
@@ -11,7 +12,8 @@ const schemas = [
   additional,
   article,
   localeStringType,
-  localeBlockType
+  localeBlockType,
+  localeTextType,
 ]
 
 export default schemas;

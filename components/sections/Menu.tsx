@@ -28,19 +28,19 @@ export default function MenuSection() {
       className="menu-section transition-colors duration-300"
       onMouseMove={handleMouseMove}
     >
-      <div className="absolute top-0 right-0 p-6 text-3xl pointer-events-auto">
+      <div className="absolute z-10 bottom-0 md:bottom-auto md:top-0 right-0 p-4 md:p-6 text-xl md:text-3xl pointer-events-auto">
         <LanguageSwitcher />
       </div>
       {background !== "transparent" && <img 
         src="/example.png" 
         alt="cursor" 
-        className="h-72 absolute pointer-events-none select-none" 
+        className="h-72 absolute z-10 pointer-events-none select-none" 
         style={{ 
           left: `${cursorPosition.x - 205}px`, 
           top: `${cursorPosition.y - 144}px` 
         }} 
       />}
-      <div className="flex w-full justify-around text-3xl">
+      <div className="relative flex flex-col md:flex-row w-full h-3/4 items-center justify-around text-xl md:text-3xl font-medium md:font-normal">
         <div onMouseEnter={() => setBackground("var(--yellow)")} onMouseLeave={() => setBackground("transparent")}>
           <Link href="/shop" className="p-12">{t.menu.shop}</Link>
         </div>

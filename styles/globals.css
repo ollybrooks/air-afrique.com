@@ -9,6 +9,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'FuturaBook';
+  src: url('/font/Futura.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #000000;
@@ -34,10 +41,14 @@ main {
 }
 
 nav {
-  @apply fixed z-30 top-0 left-0 w-full p-6 flex flex-wrap justify-center items-center gap-4 md:gap-12 text-xl md:text-3xl pointer-events-none;
+  @apply fixed z-30 top-0 left-0 w-full p-6 flex flex-wrap justify-between md:justify-center items-center gap-0 md:gap-12 text-2xl md:text-3xl pointer-events-none;
 
   > * {
     @apply pointer-events-auto;
+  }
+
+  svg {
+    @apply h-7 md:h-auto;
   }
 }
 
@@ -67,13 +78,13 @@ nav {
 }
 
 .futura {
-  font-family: "Futura", "Futura New", sans-serif;
+  font-family: "FuturaBook", "Futura", sans-serif;
 }
 
 /**/
 
 .menu {
-  @apply fixed top-0 left-0 z-20 h-screen w-full p-6 flex items-center justify-center bg-white bg-opacity-20 backdrop-blur-lg;
+  @apply fixed top-0 left-0 z-20 h-screen w-full p-6 flex items-center justify-center bg-white bg-opacity-20 backdrop-blur-lg font-medium md:font-normal;
 
   &.transparent {
     @apply bg-transparent backdrop-blur-none pointer-events-none;
@@ -105,26 +116,26 @@ nav {
 }
 
 .tint {
-  @apply w-full h-full absolute top-0 left-0 pointer-events-none select-none opacity-50;
+  @apply w-full h-full absolute top-0 left-0 pointer-events-none select-none;
 }
 
 .shop {
-  @apply w-full grid grid-cols-3 gap-24 px-4;
+  @apply w-full grid grid-cols-1 md:grid-cols-3 gap-24 md:px-4;
 }
 
 .page {
-  @apply fixed top-0 left-0 px-6 w-full h-screen grid grid-cols-3 gap-6;
+  @apply absolute md:fixed top-0 left-0 md:px-6 w-full md:h-screen flex flex-col-reverse md:grid md:grid-cols-3 md:gap-6 pb-40 md:pb-0 pt-24 md:pt-0;
 }
 
 .editorial {
   @apply w-full;
 
   .hero {
-    @apply w-full h-screen -mt-24 grid grid-cols-3 gap-24 items-center;
+    @apply w-screen -ml-6 md:-ml-0 md:w-full md:h-screen md:-mt-24 md:grid md:grid-cols-3 md:gap-24 md:items-center;
   }
 
   .index {
-    @apply w-screen -ml-6 grid grid-cols-2;
+    @apply w-screen -ml-6 md:grid md:grid-cols-2 pt-16 md:pt-0;
   }
 }
 

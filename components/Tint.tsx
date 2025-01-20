@@ -35,38 +35,79 @@ export default function Tint() {
     { time: 20, colors: { start: [25, 25, 112], end: [0, 0, 51], alpha: 0.9 } }, // night
   ];
 
-  // Need to generate month by month timeRange averages to define the gradients
-
-  const timeGradients = [
-    { // Night
-      timeRange: [0, 6],
-      gradient: 'linear-gradient(to bottom, rgba(54, 67, 150, 0.5), rgba(105, 109, 121, 0.5))'
-    },
-    { // Morning
-      timeRange: [6, 10], 
-      gradient: 'linear-gradient(to bottom, rgba(72, 108, 156, 0.5), rgba(205, 225, 244, 0.5), rgba(255, 249, 177, 0.5))'
-    },
-    { // Day
-      timeRange: [10, 17],
-      gradient: 'linear-gradient(to bottom, rgba(137, 196, 255, 0.5), rgba(231, 237, 243, 0.5))'
-    },
-    { // Evening
-      timeRange: [17, 20],
-      gradient: 'linear-gradient(to bottom, rgba(74, 84, 145, 0.5), rgba(169, 173, 198, 0.5), rgba(242, 198, 175, 0.5), rgba(247, 238, 188, 0.5))'
-    },
-    { // Night
-      timeRange: [20, 24],
-      gradient: 'linear-gradient(to bottom, rgba(54, 67, 150, 0.5), rgba(105, 109, 121, 0.5))'
+  // Monthly time ranges for different periods of the day
+  const monthlyTimeRanges = [
+    // Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec
+    {
+      night: [
+        [0,7.5], [0,7.2], [0,6.5], [0,6.0], [0,5.5], [0,5.2],
+        [0,5.3], [0,5.8], [0,6.2], [0,6.8], [0,7.2], [0,7.6]
+      ],
+      morning: [
+        [7.5,9.5], [7.2,9.3], [6.5,9], [6.0,8.8], [5.5,8.5], [5.2,8.3],
+        [5.3,8.4], [5.8,8.6], [6.2,8.8], [6.8,9], [7.2,9.3], [7.6,9.5]
+      ],
+      day: [
+        [9.5,16.0], [9.3,16.5], [9,17.2], [8.8,18.0], [8.5,18.8], [8.3,19.2],
+        [8.4,19.1], [8.6,18.5], [8.8,17.8], [9,17.0], [9.3,16.2], [9.5,15.8]
+      ],
+      evening: [
+        [16.0,17.0], [16.5,17.5], [17.2,18.2], [18.0,19.0], [18.8,19.8], [19.2,20.2],
+        [19.1,20.1], [18.5,19.5], [17.8,18.8], [17.0,18.0], [16.2,17.2], [15.8,16.8]
+      ],
+      lateNight: [
+        [17.0,24], [17.5,24], [18.2,24], [19.0,24], [19.8,24], [20.2,24],
+        [20.1,24], [19.5,24], [18.8,24], [18.0,24], [17.2,24], [16.8,24]
+      ]
     }
   ];
 
-  const getTintGradient = () => {
-    // Normalize time for the night period (20-24)
-    const normalizedTime = timeAsDecimal < 5 ? timeAsDecimal + 24 : timeAsDecimal;
+  const getMonthlyTimeRanges = () => {
+    const currentMonth = new Date().getMonth(); // 0-11
+    return {
+      night: monthlyTimeRanges[0].night[currentMonth],
+      morning: monthlyTimeRanges[0].morning[currentMonth],
+      day: monthlyTimeRanges[0].day[currentMonth],
+      evening: monthlyTimeRanges[0].evening[currentMonth],
+      lateNight: monthlyTimeRanges[0].lateNight[currentMonth]
+    };
+  };
 
+  // Update timeGradients to use dynamic time ranges
+  const timeGradients = () => {
+    const ranges = getMonthlyTimeRanges();
+    return [
+      { // Night
+        timeRange: ranges.night,
+        gradient: 'linear-gradient(to bottom, rgba(54, 67, 150, 0.5), rgba(105, 109, 121, 0.5))'
+      },
+      { // Morning
+        timeRange: ranges.morning,
+        gradient: 'linear-gradient(to bottom, rgba(72, 108, 156, 0.5), rgba(205, 225, 244, 0.5), rgba(255, 249, 177, 0.5))'
+      },
+      { // Day
+        timeRange: ranges.day,
+        gradient: 'linear-gradient(to bottom, rgba(137, 196, 255, 0.5), rgba(231, 237, 243, 0.5))'
+      },
+      { // Evening
+        timeRange: ranges.evening,
+        gradient: 'linear-gradient(to bottom, rgba(74, 84, 145, 0.5), rgba(169, 173, 198, 0.5), rgba(242, 198, 175, 0.5), rgba(247, 238, 188, 0.5))'
+      },
+      { // Late Night
+        timeRange: ranges.lateNight,
+        gradient: 'linear-gradient(to bottom, rgba(54, 67, 150, 0.5), rgba(105, 109, 121, 0.5))'
+      }
+    ];
+  };
+
+  const getTintGradient = () => {
+    // Get current gradients based on month
+    const currentGradients = timeGradients();
+    
     // Find the matching gradient for the current time
-    const currentGradient = timeGradients.find(({ timeRange }) => {
+    const currentGradient = currentGradients.find(({ timeRange }) => {
       const [start, end] = timeRange;
+      
       if (start < end) {
         return timeAsDecimal >= start && timeAsDecimal < end;
       } else {
@@ -75,7 +116,7 @@ export default function Tint() {
       }
     });
 
-    return currentGradient?.gradient ?? timeGradients[0].gradient; // Default to first gradient if none found
+    return currentGradient?.gradient ?? currentGradients[0].gradient;
   };
 
   return (
