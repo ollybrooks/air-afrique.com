@@ -61,7 +61,7 @@ export default function About({ data, general }: { data: any, general: any }) {
         }}
         onClick={handleClick}
       >
-        <div className="fixed top-0 left-0 w-full h-full overflow-hidden">
+        <div className="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none select-none">
           {images.map((image, index) => (
             <img 
               key={index}
@@ -75,23 +75,25 @@ export default function About({ data, general }: { data: any, general: any }) {
             />
           ))}
         </div>
-        <div className="relative text-center text-xl md:text-4xl font-medium max-w-5xl mx-auto select-none mt-48 px-4 md:px-0">
+        <div className="relative text-center text-xl md:text-4xl font-medium tracking-[-0.01em] max-w-5xl mx-auto select-none mt-48 px-4 md:px-0">
           <PortableText value={data.content} />
         </div>
         <div className="relative flex flex-col gap-4 md:gap-8 my-36 text-center items-center select-none">
-          <div className="text-xl md:text-4xl font-medium uppercase">Team</div>
+          <div className="text-xl md:text-4xl font-medium uppercase tracking-[-0.01em]">
+            Team
+          </div>
           {data.team.map((item: any) => (
             item.link ? (
               <a href={item.link} key={item.name}>
                 <div>
                   <p className="uppercase text-xs md:text-xl">{item.title}</p>
-                  <p className="font-medium text-base md:text-3xl">{item.name}</p>
+                  <p className="font-medium text-base md:text-3xl tracking-[-0.01em]">{item.name}</p>
                 </div>
               </a>
             ) : (
               <div key={item.name}>
                 <p className="uppercase text-xs md:text-xl">{item.title}</p>
-                <p className="font-medium text-base md:text-3xl">{item.name}</p>
+                <p className="font-medium text-base md:text-3xl tracking-[-0.01em]">{item.name}</p>
               </div>
             )
           ))}

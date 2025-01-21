@@ -1,6 +1,7 @@
 import { useCart } from "@/context/cart";
 import Tint from "./Tint";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function Cart() {
 
@@ -53,7 +54,13 @@ export default function Cart() {
           {items.map((item, index) => (
             <div className="flex gap-4" key={index}>
               <div className="aspect-square w-1/3">
-                <img src={item.images[0].src} alt={item.title} className="w-full h-full object-cover" />
+                <Image 
+                  src={item.images[0].src}
+                  alt={item.title}
+                  width={320}
+                  height={320}
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div className="flex flex-col justify-between">
                 <div>

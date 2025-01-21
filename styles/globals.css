@@ -71,6 +71,7 @@ nav {
 .title {
   font-family: 'Eurostile', sans-serif;
   font-weight: bold;
+  letter-spacing: -0.02em;
 }
 
 .serif {
@@ -79,6 +80,7 @@ nav {
 
 .futura {
   font-family: "FuturaBook", "Futura", sans-serif;
+  letter-spacing: -0.05em;
 }
 
 /**/
@@ -128,10 +130,10 @@ nav {
 }
 
 .editorial {
-  @apply w-full;
+  @apply w-full -mb-24;
 
   .hero {
-    @apply w-screen -ml-6 md:-ml-0 md:w-full md:h-screen md:-mt-24 md:grid md:grid-cols-3 md:gap-24 md:items-center;
+    @apply w-screen -ml-6 md:-ml-0 md:w-full md:h-screen md:-mt-24 md:grid md:grid-cols-[1fr_2fr_1fr] md:gap-12 md:items-center;
   }
 
   .index {

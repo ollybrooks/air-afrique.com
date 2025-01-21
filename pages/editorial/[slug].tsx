@@ -16,6 +16,8 @@ interface Article {
   }[]
   slug: string
   credits: string
+  background: string
+  type: string
 }
 
 interface Props {
@@ -27,6 +29,7 @@ export default function ArticlePage({ article, general }: Props) {
   const router = useRouter()
   const locale = router.locale || 'fr'
   
+  const textContainerRef = useRef<HTMLDivElement>(null)
   const imagesContainerRef = useRef<HTMLDivElement>(null)
 
   const scrollToImage = (index: number) => {
@@ -41,7 +44,7 @@ export default function ArticlePage({ article, general }: Props) {
   const [scrollAmount, setScrollAmount] = useState(0);
 
   useEffect(() => {
-    const container = imagesContainerRef.current;
+    const container = article.type === 'text' ? textContainerRef.current : imagesContainerRef.current;
     if (!container) return;
 
     const handleScroll = () => {
@@ -71,17 +74,22 @@ export default function ArticlePage({ article, general }: Props) {
 
   return (
     <Layout metadata={general}>
-      <div className="page">
-        <div className="pt-24">
+      <div className="page" style={{
+        background: article.background === "green" ? "var(--green)" : ""
+      }}>
+        <div className="py-24 overflow-y-scroll" ref={textContainerRef}>
           <h1 className="text-3xl font-bold uppercase title">{article.title}</h1>
-          <h2 className="text-xs uppercase my-4 futura">{article.credits}</h2>
-          <div className="font-medium text-sm mt-8">
+          <h2 className="text-xs uppercase my-4 futura whitespace-pre-wrap">{article.credits}</h2>
+          <div className="font-medium text-sm leading-[17px] mt-8 text-justify">
             <PortableText value={article.content} />
           </div>
         </div>
-        <div ref={imagesContainerRef} className="flex flex-col py-24 gap-24 overflow-y-scroll">
+        <div 
+          ref={imagesContainerRef} 
+          className="flex flex-col py-24 overflow-y-scroll"
+        >
           {article.images.map((image, index) => (
-            <div key={index} className="relative flex flex-col items-end">
+            <div key={index} className="relative flex flex-col items-end pt-24">
               <Image 
                 src={image.url}
                 alt={image.caption || article.title}
@@ -89,11 +97,11 @@ export default function ArticlePage({ article, general }: Props) {
                 height={800}
                 className="w-full h-auto"
               />
-              <div className="text-sm serif">{index}</div>
+              <div className="text-[10px] serif mt-2">{index}</div>
             </div>
           ))}
         </div>
-        <div className="pt-48 serif flex flex-col items-start">
+        <div className="pt-48 serif flex flex-col gap-2 items-start">
           {article.images.map((image, index) => (
             <button
               key={index} 
@@ -106,7 +114,7 @@ export default function ArticlePage({ article, general }: Props) {
         </div>
       </div>
       <div className="fixed bottom-0 left-0 w-full p-2 bg-white bg-opacity-70 backdrop-blur-sm">
-        <div className={`absolute top-0 left-0 bg-[var(--green)] h-full`} style={{
+        <div className={`absolute top-0 left-0 bg-[var(--green)] opacity-80 h-full`} style={{
           width: `${scrollAmount * 100}%`
         }} />
         <div className="relative text-xs font-medium">

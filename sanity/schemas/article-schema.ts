@@ -1,5 +1,3 @@
-import { client } from "@/sanity/utils"
-
 const article = {
   name: 'article',
   title: 'Article',
@@ -19,6 +17,19 @@ const article = {
         source: 'title.fr',
         slugify: (input: string) => input.toLowerCase().replace(/\s+/g, '-').slice(0, 200),
       },
+    },
+    {
+      name: 'type',
+      title: 'Type',
+      description: 'The type of the article, either text or image focused',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Text', value: 'text'},
+          {title: 'Image', value: 'image'},
+        ]
+      },
+      initialValue: 'text'
     },
     {
       name: 'hero',
@@ -77,12 +88,12 @@ const article = {
           {
             name: 'caption',
             title: 'Caption',
-            type: 'localeString'
+            type: 'string'
           }
         ],
         preview: {
           select: {
-            title: 'caption.fr',
+            title: 'caption',
             media: 'image',
           },
         },
@@ -98,7 +109,7 @@ const article = {
     prepare(selection: any) {
       const {title, subtitle} = selection
       return {
-        title: subtitle ? `${title} (Hero)` : title,
+        title: subtitle ? `[HERO] ${title}` : title,
         media: selection.media
       }
     }
@@ -114,30 +125,29 @@ const article = {
           action: async (props: any) => {
             // First check if this document is being set as hero
             if (props.draft?.hero) {
-              // Unset other heroes first
-              const query = '*[_type == "article" && hero == true && _id != $id]'
-              const heroArticles = await client.fetch(query, { id: props.draft._id })
+              const {documentStore} = context
+
+              // Query both published and draft documents that are heroes
+              const query = '*[_type == "article" && hero == true && _id != $id && !(_id in path("drafts.**"))]'
+              const heroArticles = await documentStore.client.fetch(query, { id: props.draft._id })
               
-              // Update all found hero articles
-              await Promise.all(heroArticles.map(async (doc: any) => {
-                // Update published version
-                await client.patch(doc._id)
-                  .set({ hero: false })
-                  .commit()
+              const tx = props.createTransaction()
+
+              // Update each hero article and its draft
+              for (const doc of heroArticles) {
+                // Update the published document
+                tx.patch(doc._id, (patch: any) => patch.set({hero: false}))
                 
-                // Check and update draft version
-                const draftId = `drafts.${doc._id}`
-                const draftExists = await client.fetch(`*[_id == $id][0]`, { id: draftId })
-                if (draftExists) {
-                  await client.patch(draftId)
-                    .set({ hero: false })
-                    .commit()
-                }
-              }))
+                // Update the draft version if it exists
+                tx.patch(`drafts.${doc._id}`, (patch: any) => patch.set({hero: false}))
+                
+                // Also publish the changes
+                tx.publish(doc._id)
+              }
+
+              await tx.commit()
             }
             
-            // Then proceed with normal publish
-            await client.patch(props.draft._id).commit()
             return props.publish()
           }
         }

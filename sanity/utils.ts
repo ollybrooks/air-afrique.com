@@ -57,11 +57,14 @@ export const getArticles = async (locale: string) => {
       "heroImage": heroImage.asset->url,
       "images": images[]{
         "url": image.asset->url,
-        "caption": coalesce(caption[$locale], caption.fr)
+        caption
       },
       "slug": slug.current,
       "credits": coalesce(credits[$locale], credits.fr),
-      "summary": coalesce(summary[$locale], summary.fr)
+      "summary": coalesce(summary[$locale], summary.fr),
+      background,
+      type,
+      hero
     }`,
     { locale }
   )
