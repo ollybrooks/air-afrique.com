@@ -1,19 +1,18 @@
 import Interlude from "@/components/Interlude";
 import Layout from "@/components/Layout";
-import { getArticles, getGeneral } from "@/sanity/utils";
+import { getArticles, getEditorial, getGeneral } from "@/sanity/utils";
 import Link from "next/link";
 import { useState } from "react";
 import Image from "next/image";
 
-export default function Editorial({ articles, general }: { articles: any, general: any }) {
+export default function Editorial({ articles, general, editorial }: { articles: any, general: any, editorial: any }) {
   const [showInterlude, setShowInterlude] = useState(false);
 
   const handleInterludeComplete = () => {
     setShowInterlude(false);
   };
 
-  const hero = articles.find((article: any) => article.hero);
-  console.log(hero);
+  const hero = articles.find((article: any) => article._id === editorial.heroArticle._ref);
 
   return(
     <Layout metadata={general}>
@@ -51,7 +50,7 @@ export default function Editorial({ articles, general }: { articles: any, genera
           </div>
         </div>
         <div className="index">
-          {articles.filter((article: any) => !article.hero).map((article: any, index: number) => (
+          {articles.filter((article: any) => article._id !== editorial.heroArticle._ref).map((article: any, index: number) => (
             <Item 
               key={article.slug} 
               article={article} 
@@ -115,8 +114,10 @@ export async function getStaticProps(context: any) {
   const { locale } = context;
   const articles = await getArticles(locale);
   const general = await getGeneral(locale);
+  const editorial = await getEditorial();
+
   return {
-    props: { articles, general },
+    props: { articles, general, editorial },
     revalidate: 60
   };
 }

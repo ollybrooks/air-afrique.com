@@ -15,6 +15,12 @@ export default function ProductPage({ product, general }: ProductPageProps) {
 
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
+  const [selectedVariant, setSelectedVariant] = useState(product.variants[0]);
+
+  const handleVariant = (variant: any) => {
+    setSelectedVariant(variant);
+    setAdded(false);
+  }
 
   return(
     <Layout metadata={general}>
@@ -33,8 +39,15 @@ export default function ProductPage({ product, general }: ProductPageProps) {
         <div className="md:h-full flex flex-col justify-center md:gap-4 fixed md:relative bottom-0 left-0 w-full md:w-auto border-t border-black md:border-t-0 bg-white md:bg-transparent">
           <div className="text-2xl md:text-4xl font-medium w-full p-4 md:p-0">
             <div>{product.title}</div>
-            <div>€{product.variants[0]?.price.amount}</div>
+            <div>€{Number(product.variants[0]?.price.amount).toFixed(2)}</div>
           </div>
+          {product.variants.length > 1 && (
+            <div className="w-full flex justify-between serif text-[28px] font-bold md:mt-4 px-4 md:p-0">
+              {product.variants.map((variant: any) => (
+                <button key={variant.id} onClick={() => handleVariant(variant)}>{variant.title}</button>
+              ))}
+            </div>
+          )}
           <button 
             className="serif w-full border-t md:border-y border-black py-2 text-2xl md:text-3xl font-bold" 
             onClick={() => {

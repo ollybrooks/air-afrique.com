@@ -19,6 +19,18 @@ export const getGeneral = async (locale: string) => {
   )
 }
 
+export const getHome = async () => {
+  return client.fetch(
+    groq`*[_type == "home"][0]{
+      _updatedAt,
+      _id,
+      "images": images[]{
+        "url": asset->url,
+      }
+    }`
+  )
+}
+
 export const getAbout = async (locale: string) => {
   return client.fetch(
     groq`*[_type == "about"][0]{
@@ -67,5 +79,16 @@ export const getArticles = async (locale: string) => {
       hero
     }`,
     { locale }
+  )
+}
+
+export const getEditorial = async () => {
+  return client.fetch(
+    groq`*[_type == "editorial"][0]{
+      _updatedAt,
+      _id,
+      title,
+      heroArticle
+    }`
   )
 }

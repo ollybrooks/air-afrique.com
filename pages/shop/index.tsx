@@ -2,6 +2,7 @@ import Layout from "@/components/Layout";
 import { getGeneral } from "@/sanity/utils";
 import client from "@/shopify/client";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Shop({ products, general }: { products: any[], general: any }) {
 
@@ -34,10 +35,16 @@ export default function Shop({ products, general }: { products: any[], general: 
             href={`/shop/${item.handle}`} 
             className="shop-item"
           >
-            <img src={item.images[0].src} alt={item.title} className="aspect-square object-cover" />
+            <Image 
+              src={item.images[0].src} 
+              alt={item.title} 
+              className="aspect-square object-cover" 
+              width={960}
+              height={960}
+            />
             <div className="flex justify-between mt-1 font-medium">
               <p>{item.title}</p>
-              <p>€{item.variants[0].price.amount}</p>
+              <p>€{Number(item.variants[0].price.amount).toFixed(2)}</p>
             </div>
           </Link>
         ))}

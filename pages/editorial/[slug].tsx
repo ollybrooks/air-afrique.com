@@ -42,6 +42,7 @@ export default function ArticlePage({ article, general }: Props) {
   }
 
   const [scrollAmount, setScrollAmount] = useState(0);
+  const [current, setCurrent] = useState(0);
 
   useEffect(() => {
     const container = article.type === 'text' ? textContainerRef.current : imagesContainerRef.current;
@@ -58,6 +59,7 @@ export default function ArticlePage({ article, general }: Props) {
   }, []);
 
   const [elapsedTime, setElapsedTime] = useState(0);
+  const [showReferences, setShowReferences] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -74,10 +76,10 @@ export default function ArticlePage({ article, general }: Props) {
 
   return (
     <Layout metadata={general}>
-      <div className="page" style={{
+      <div className="page h-full" style={{
         background: article.background === "green" ? "var(--green)" : ""
       }}>
-        <div className="py-24 overflow-y-scroll" ref={textContainerRef}>
+        <div className="absolute left-0 bottom-0 w-full h-[50vh] md:h-auto md:relative px-4 pt-8 pb-12 md:px-0 md:py-24 overflow-y-scroll" ref={textContainerRef}>
           <h1 className="text-3xl font-bold uppercase title">{article.title}</h1>
           <h2 className="text-xs uppercase my-4 futura whitespace-pre-wrap">{article.credits}</h2>
           <div className="font-medium text-sm leading-[17px] mt-8 text-justify">
@@ -86,37 +88,65 @@ export default function ArticlePage({ article, general }: Props) {
         </div>
         <div 
           ref={imagesContainerRef} 
-          className="flex flex-col py-24 overflow-y-scroll"
-        >
+          className="fixed top-0 left-0 w-full md:relative flex flex-col justify-center md:justify-normal items-center py-24 overflow-y-scroll h-[50vh] md:h-auto border-b border-black md:border-b-0"
+       >
           {article.images.map((image, index) => (
-            <div key={index} className="relative flex flex-col items-end pt-24">
+            <div 
+              key={index} 
+              className={`absolute md:relative w-full h-2/3 md:h-auto flex flex-col items-end md:pt-24 ${index === current ? 'opacity-100' : 'opacity-0 md:opacity-100'}`}
+              onClick={() => setCurrent(current === article.images.length - 1 ? 0 : current + 1)}
+            >
               <Image 
                 src={image.url}
                 alt={image.caption || article.title}
                 width={1200}
                 height={800}
-                className="w-full h-auto"
+                className="w-full h-full md:h-auto object-contain"
               />
-              <div className="text-[10px] serif mt-2">{index}</div>
+              <div className="text-[10px] serif mt-2 hidden md:block">{index}</div>
             </div>
           ))}
+          <div className="absolute bottom-0 left-0 p-4 flex justify-between items-end w-full md:hidden">
+            <div className="text-[10px] serif"><sup>{current}</sup> {article.images[current].caption}</div>
+            <button className="text-[8px] leading-[9.5px] serif" onClick={() => setShowReferences(true)}>REFERENCES</button>
+          </div>
         </div>
-        <div className="pt-48 serif flex flex-col gap-2 items-start">
+        <div className="pt-48 serif flex-col gap-2 items-start hidden md:flex">
           {article.images.map((image, index) => (
             <button
               key={index} 
-              className="relative cursor-pointer"
+              className="relative cursor-pointer text-left"
               onClick={() => scrollToImage(index)}
             >
               <sup>{index}</sup> {image.caption}
             </button>
           ))}
         </div>
+        {showReferences && <div className="fixed z-50 top-0 left-0 w-full h-screen bg-white bg-opacity-70 serif block md:hidden">
+          <div className="relative bg-white border-b border-black text-[10px] w-full h-1/2 flex flex-col gap-2 items-start justify-end p-4">
+            {article.images.map((image, index) => (
+              <button
+                key={index} 
+                className={`relative cursor-pointer text-left ${index === current ? 'font-bold' : ''}`}
+                onClick={() => {
+                  setCurrent(index)
+                  setShowReferences(false)
+                }}
+              >
+                <sup>{index}</sup> {image.caption}
+              </button>
+            ))}
+            <button className="text-[8px] leading-[9.5px] serif absolute bottom-0 right-0 m-4" onClick={() => setShowReferences(false)}>(CLOSE)</button>
+          </div>
+        </div>}
       </div>
       <div className="fixed bottom-0 left-0 w-full p-2 bg-white bg-opacity-70 backdrop-blur-sm">
         <div className={`absolute top-0 left-0 bg-[var(--green)] opacity-80 h-full`} style={{
           width: `${scrollAmount * 100}%`
         }} />
+        {current > 0 && <div className={`absolute top-0 left-0 bg-[var(--green)] opacity-80 h-full`} style={{
+          width: `${(100 / article.images.length) * (current+1)}%`
+        }} />}
         <div className="relative text-xs font-medium">
           <span className="opacity-50">ELAPSED</span> {formatTime(elapsedTime)}
         </div>

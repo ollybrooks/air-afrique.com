@@ -5,7 +5,7 @@ import schemas from '@/sanity/schemas';
 import { AsteriskIcon, DocumentIcon } from '@sanity/icons';
 
 const singletonActions = new Set(['publish', 'discardChanges', 'restore']);
-const singletonTypes = new Set(['general', 'about', 'additional']);
+const singletonTypes = new Set(['general', 'home', 'about', 'editorial', 'additional']);
 
 const config = defineConfig({
   projectId: "36cwc4ht",
@@ -29,6 +29,15 @@ const config = defineConfig({
                   .documentId('general')
               ),
             S.listItem()
+              .title('Home')
+              .id('home')
+              .icon(DocumentIcon)
+              .child(
+                S.document()
+                  .schemaType('home')
+                  .documentId('home')
+              ),
+            S.listItem()
               .title('About')
               .id('about')
               .icon(DocumentIcon)
@@ -36,6 +45,15 @@ const config = defineConfig({
                 S.document()
                   .schemaType('about')
                   .documentId('about')
+              ),
+            S.listItem()
+              .title('Editorial')
+              .id('editorial')
+              .icon(DocumentIcon)
+              .child(
+                S.document()
+                  .schemaType('editorial')
+                  .documentId('editorial')
               ),
             S.listItem()
               .title('Additional Pages')
@@ -59,7 +77,12 @@ const config = defineConfig({
     templates: (templates) => templates.filter((template) => !singletonTypes.has(template.schemaType))
   },
   document: {
-    actions: (input, context) => singletonActions.has(context.schemaType) ? input.filter(({ action }) => action && singletonActions.has(action)) : input
+    actions: (input, context) => {
+      // Handle singleton actions only
+      return singletonActions.has(context.schemaType) 
+        ? input.filter(({ action }) => action && singletonActions.has(action))
+        : input
+    }
   }
 })
 

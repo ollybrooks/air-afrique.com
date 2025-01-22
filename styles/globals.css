@@ -41,7 +41,7 @@ main {
 }
 
 nav {
-  @apply fixed z-30 top-0 left-0 w-full p-6 flex flex-wrap justify-between md:justify-center items-center gap-0 md:gap-12 text-2xl md:text-3xl pointer-events-none;
+  @apply fixed z-30 top-0 left-0 w-full px-4 py-6 md:p-6 flex flex-wrap justify-between md:justify-center items-center gap-0 md:gap-12 text-2xl md:text-3xl pointer-events-none;
 
   > * {
     @apply pointer-events-auto;

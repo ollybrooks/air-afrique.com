@@ -32,12 +32,11 @@ const article = {
       initialValue: 'text'
     },
     {
-      name: 'hero',
-      title: 'Hero',
-      type: 'boolean',
-      initialValue: false
+      name: 'date',
+      title: 'Date',
+      type: 'date',
+      initialValue: new Date().toISOString().split('T')[0]
     },
-    // DATE
     {
       name: 'summary',
       title: 'Summary',
@@ -103,57 +102,16 @@ const article = {
   preview: {
     select: {
       title: 'title.fr',
-      subtitle: 'hero',
       media: 'heroImage',
     },
     prepare(selection: any) {
-      const {title, subtitle} = selection
+      const {title} = selection
       return {
-        title: subtitle ? `[HERO] ${title}` : title,
+        title: title,
         media: selection.media
       }
     }
   },
-  document: {
-    actions: (prev: any, context: any) => {
-      const defaultActions = prev.filter(({ action }: { action: any }) => action !== 'publish')
-      
-      return [
-        ...defaultActions,
-        {
-          label: 'Publish',
-          action: async (props: any) => {
-            // First check if this document is being set as hero
-            if (props.draft?.hero) {
-              const {documentStore} = context
-
-              // Query both published and draft documents that are heroes
-              const query = '*[_type == "article" && hero == true && _id != $id && !(_id in path("drafts.**"))]'
-              const heroArticles = await documentStore.client.fetch(query, { id: props.draft._id })
-              
-              const tx = props.createTransaction()
-
-              // Update each hero article and its draft
-              for (const doc of heroArticles) {
-                // Update the published document
-                tx.patch(doc._id, (patch: any) => patch.set({hero: false}))
-                
-                // Update the draft version if it exists
-                tx.patch(`drafts.${doc._id}`, (patch: any) => patch.set({hero: false}))
-                
-                // Also publish the changes
-                tx.publish(doc._id)
-              }
-
-              await tx.commit()
-            }
-            
-            return props.publish()
-          }
-        }
-      ]
-    }
-  }
 }
 
 export default article;
