@@ -2,6 +2,7 @@ import Layout from "@/components/Layout";
 import { getAbout, getGeneral } from "@/sanity/utils";
 import { PortableText } from "@portabletext/react";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function About({ data, general }: { data: any, general: any }) {
 
@@ -29,8 +30,8 @@ export default function About({ data, general }: { data: any, general: any }) {
       let foundSpot = false;
       
       while (!foundSpot && attempts < 50) {
-        newImage.x = Math.random() * 80 + 10; // Leave 10% padding on edges
-        newImage.y = Math.random() * 80 + 10;
+        newImage.x = Math.random() * 80; // Leave 10% padding on edges
+        newImage.y = Math.random() * 80;
         
         foundSpot = true;
         // Check against all existing images
@@ -65,10 +66,13 @@ export default function About({ data, general }: { data: any, general: any }) {
       >
         <div className="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none select-none">
           {images.map((image, index) => (
-            <img 
+            <Image
               key={index}
-              src={`/img/0${index + 1}.png`} 
+              src={`/img/0${index + 1}.png`}
+              alt={`Air Afrique ${index + 1}`}
               className="absolute max-w-48 max-h-48"
+              width={192}
+              height={192}
               style={{
                 left: `${image.x}%`,
                 top: `${image.y}%`,
@@ -77,7 +81,7 @@ export default function About({ data, general }: { data: any, general: any }) {
             />
           ))}
         </div>
-        <div className="relative text-center text-xl md:text-4xl font-medium tracking-[-0.01em] max-w-5xl mx-auto mt-48 px-4 md:px-0">
+        <div className="relative text-center text-xl md:text-4xl font-medium tracking-[-0.01em] select-none max-w-5xl mx-auto mt-48 px-4 md:px-0">
           <PortableText value={data.content} />
         </div>
         <div className="relative flex flex-col gap-4 md:gap-8 my-36 text-center items-center select-none">

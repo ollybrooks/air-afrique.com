@@ -1,39 +1,45 @@
 import Layout from "@/components/Layout";
-import { getGeneral } from "@/sanity/utils";
+import { getGeneral, getMuseum } from "@/sanity/utils";
 import client from "@/shopify/client";
 import Link from "next/link";
 import Image from "next/image";
+import Interlude from "@/components/Interlude";
+import { useEffect, useState } from "react";
+import { useRouter } from 'next/router';
 
-export default function Shop({ products, general }: { products: any[], general: any }) {
+export default function Shop({ products, general, museum }: { products: any[], general: any, museum: any }) {
+  const router = useRouter();
+  const [showInterlude, setShowInterlude] = useState(false);
+  const [pendingRoute, setPendingRoute] = useState('');
+  const [museumContent, setMuseumContent] = useState<any>(null);
 
-  console.log(products);
+  const handleInterludeComplete = () => {
+    // setShowInterlude(false);
+    if (pendingRoute) {
+      router.push(pendingRoute);
+    }
+  };
 
-  const data = [
-    {
-      title: "Issue 1",
-      price: "10.00",
-      image: "/example.png"
-    },
-    {
-      title: "Issue 2",
-      price: "10.00",
-      image: "/example.png"
-    },
-    {
-      title: "T-shirt 1",
-      price: "30.00",
-      image: "/example.png"
-    },
-  ]
+  const handleItemClick = (e: React.MouseEvent, handle: string) => {
+    e.preventDefault();
+    setPendingRoute(`/shop/${handle}`);
+    setShowInterlude(true);
+  };
+
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * museum.length);
+    setMuseumContent(museum[randomIndex]);
+  }, [museum]);
 
   return(
     <Layout metadata={general}>
-      <div className="shop">
+      <div className={`shop ${showInterlude ? "hide" : ""}`}>
         {products.map((item, index) => (
           <Link 
             key={index} 
             href={`/shop/${item.handle}`} 
             className="shop-item"
+            onClick={(e) => handleItemClick(e, item.handle)}
           >
             <Image 
               src={item.images[0].src} 
@@ -49,6 +55,12 @@ export default function Shop({ products, general }: { products: any[], general: 
           </Link>
         ))}
       </div>
+
+      <Interlude 
+        visible={showInterlude} 
+        onComplete={handleInterludeComplete} 
+        content={museumContent} 
+      />
     </Layout>
   );
 }
@@ -57,10 +69,11 @@ export async function getStaticProps(context: any) {
   const { locale } = context;
   const general = await getGeneral(locale);
   const products = await client.product.fetchAll();
-
+  const museum = await getMuseum(locale);
   return {
     props: { 
       general,
+      museum,
       products: JSON.parse(JSON.stringify(products))
     },
     revalidate: 60

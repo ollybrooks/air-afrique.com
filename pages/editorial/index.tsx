@@ -1,44 +1,71 @@
 import Interlude from "@/components/Interlude";
 import Layout from "@/components/Layout";
-import { getArticles, getEditorial, getGeneral } from "@/sanity/utils";
+import { getArticles, getEditorial, getGeneral, getMuseum } from "@/sanity/utils";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useRouter } from 'next/router';
 
-export default function Editorial({ articles, general, editorial }: { articles: any, general: any, editorial: any }) {
+export default function Editorial({ articles, general, editorial, museum }: { articles: any, general: any, editorial: any, museum: any }) {
+  
+  const router = useRouter();
   const [showInterlude, setShowInterlude] = useState(false);
+  const [pendingRoute, setPendingRoute] = useState('');
+  const [museumContent, setMuseumContent] = useState<any>(null);
 
   const handleInterludeComplete = () => {
-    setShowInterlude(false);
+    // setShowInterlude(false);
+    if (pendingRoute) {
+      router.push(pendingRoute);
+    }
   };
 
   const hero = articles.find((article: any) => article._id === editorial.heroArticle._ref);
+
+  const handleItemClick = (e: React.MouseEvent, handle: string) => {
+    e.preventDefault();
+    setPendingRoute(`/editorial/${handle}`);
+    setShowInterlude(true);
+  };
+
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * museum.length);
+    setMuseumContent(museum[randomIndex]);
+  }, [museum]);
 
   return(
     <Layout metadata={general}>
       <div className="editorial">
         <div className="hero">
           <div>
-            <Link href={`/editorial/${hero.slug}`}>
+            <Link 
+              href={`/editorial/${hero.slug}`}
+              onClick={(e) => handleItemClick(e, hero.slug)}
+            >
               <div className="text-3xl font-medium uppercase title p-4 md:p-0">
                 {hero.title}
               </div>
             </Link>
             <Link 
-              href={`/editorial/${hero.slug}`} 
+              href={`/editorial/${hero.slug}`}
+              onClick={(e) => handleItemClick(e, hero.slug)}
               className="text-sm uppercase font-medium text-[var(--red)] tracking-wider mt-4 hidden md:block"
             >
               Read More
             </Link>
           </div>
           <div>
-            <Link href={`/editorial/${hero.slug}`}>
+            <Link 
+              href={`/editorial/${hero.slug}`}
+              onClick={(e) => handleItemClick(e, hero.slug)}
+            >
               <Image 
                 src={hero.heroImage}
                 alt={hero.title}
                 width={1200}
                 height={800}
                 className="w-full h-auto"
+                priority
               />
             </Link>
           </div>
@@ -59,20 +86,21 @@ export default function Editorial({ articles, general, editorial }: { articles: 
               key={article.slug} 
               article={article} 
               index={index}
+              handleItemClick={handleItemClick}
             />
           ))}
         </div>
       </div>
-      
-      {/* <button onClick={() => setShowInterlude(true)} className="bg-sky-200 rounded-full py-2 px-4 mx-auto block mt-48">
-        Page Button Example
-      </button> */}
-      {showInterlude && <Interlude onComplete={handleInterludeComplete} />}
+      <Interlude 
+        visible={showInterlude} 
+        onComplete={handleInterludeComplete} 
+        content={museumContent}
+      />
     </Layout>
   );
 }
 
-function Item({ article, index }: { article: any, index: number }) {
+function Item({ article, index, handleItemClick }: { article: any, index: number, handleItemClick: (e: React.MouseEvent, handle: string) => void }) {
   const [showDescription, setShowDescription] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
 
@@ -94,6 +122,7 @@ function Item({ article, index }: { article: any, index: number }) {
   return(
     <Link 
       href={`/editorial/${article.slug}`}
+      onClick={(e) => handleItemClick(e, article.slug)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={() => setIsHovering(false)}
       className="relative w-full h-[560px]"
@@ -119,9 +148,10 @@ export async function getStaticProps(context: any) {
   const articles = await getArticles(locale);
   const general = await getGeneral(locale);
   const editorial = await getEditorial();
+  const museum = await getMuseum(locale);
 
   return {
-    props: { articles, general, editorial },
+    props: { articles, general, editorial, museum },
     revalidate: 60
   };
 }

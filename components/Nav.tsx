@@ -62,7 +62,7 @@ export default function Nav({ cartControl }: { cartControl?: boolean }) {
           </button>
         </div>
       </nav>
-      {menu && <Menu />}
+      <Menu visible={menu} />
       {cart && <Cart setCartOpen={setCart} />}
     </>
   );

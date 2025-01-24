@@ -92,3 +92,14 @@ export const getEditorial = async () => {
     }`
   )
 }
+export const getMuseum = async (locale: string) => {
+  return client.fetch(
+    groq`*[_type == "museum"]{
+      _id,
+      "image": image.asset->url,
+      "credits": coalesce(credits[$locale], credits.fr),
+      "description": coalesce(description[$locale], description.fr)
+    }`,
+    { locale }
+  )
+}

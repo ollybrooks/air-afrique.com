@@ -9,7 +9,7 @@ import LanguageSwitcher from "./LanguageSwitcher";
 import { getArticles } from "../sanity/utils";
 import client from "@/shopify/client";
 
-export default function Menu() {
+export default function Menu({ visible }: { visible: boolean }) {
 
   const router = useRouter();
   const { locale = "fr" } = router || {};
@@ -17,14 +17,16 @@ export default function Menu() {
   const t = locale === 'en' ? en : fr;
 
   useEffect(() => {
-    // Lock scroll when component mounts
-    document.body.style.overflow = 'hidden';
-    
-    // Cleanup: restore scroll when component unmounts
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, []);
+    if (visible) {
+      // Lock scroll when component mounts
+      document.body.style.overflow = 'hidden';
+      
+      // Cleanup: restore scroll when component unmounts
+      return () => {
+        document.body.style.overflow = 'unset';
+      };
+    }
+  }, [visible]);
 
   const { visitTime } = useTime();
 
@@ -36,12 +38,10 @@ export default function Menu() {
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  const [timeElapsed, setTimeElapsed] = useState(() => {
-    const elapsedTime = new Date().getTime() - visitTime.getTime();
-    return formatTime(elapsedTime);
-  });
+  const [timeElapsed, setTimeElapsed] = useState("00:00:00");  // Initialize with a static value
 
   useEffect(() => {
+    // Set initial time and start interval only on client-side
     const calculateTime = () => {
       const elapsedTime = new Date().getTime() - visitTime.getTime();
       setTimeElapsed(formatTime(elapsedTime));
@@ -95,8 +95,25 @@ export default function Menu() {
     });
   };
 
+  const [currentDate, setCurrentDate] = useState(""); 
+  const [localTime, setLocalTime] = useState("");
+  const [destinationTime, setDestinationTime] = useState("");
+
+  useEffect(() => {
+    const updateTimes = () => {
+      const now = new Date();
+      setCurrentDate(now.toLocaleDateString('en-GB', {day: 'numeric', month: 'short', year: 'numeric'}));
+      setLocalTime(`${now.toLocaleTimeString('en-GB', {hour: 'numeric', minute: 'numeric', second: 'numeric'})} ${now.toLocaleTimeString('en-GB', {timeZoneName: 'short'}).split(' ')[1]}`);
+      setDestinationTime(`${now.toLocaleTimeString('en-GB', {hour: 'numeric', minute: 'numeric', second: 'numeric', timeZone: 'CET'})} CET`);
+    };
+
+    updateTimes();
+    const interval = setInterval(updateTimes, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   return(
-    <div className={`menu`} onMouseMove={handleMouseMove}>
+    <div className={`menu ${visible ? "" : "hide"}`} onMouseMove={handleMouseMove}>
       <Tint />
 
       <div className="relative z-10 flex flex-col md:flex-row w-full h-3/4 items-center justify-around text-xl md:text-3xl">
@@ -134,9 +151,9 @@ export default function Menu() {
               <div>Local Time at Destination</div>
             </div>
             <div>
-              <div>{new Date().toLocaleDateString('en-GB', {day: 'numeric', month: 'short', year: 'numeric'})}</div>
-              <div>{new Date().toLocaleTimeString('en-GB', {hour: 'numeric', minute: 'numeric', second: 'numeric'})} {new Date().toLocaleTimeString('en-GB', {timeZoneName: 'short'}).split(' ')[1]}</div>
-              <div>{new Date().toLocaleTimeString('en-GB', {hour: 'numeric', minute: 'numeric', second: 'numeric', timeZone: 'CET'})} CET</div>
+              <div>{currentDate}</div>
+              <div>{localTime}</div>
+              <div>{destinationTime}</div>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4 whitespace-nowrap">

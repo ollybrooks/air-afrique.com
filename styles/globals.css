@@ -87,14 +87,14 @@ nav {
 /**/
 
 .menu {
-  @apply fixed top-0 left-0 z-20 h-screen w-full p-6 flex items-center justify-center bg-white bg-opacity-20 backdrop-blur-lg font-medium md:font-normal;
+  @apply fixed top-0 left-0 z-20 h-screen w-full p-6 flex items-center justify-center bg-white bg-opacity-20 backdrop-blur-lg font-medium md:font-normal transition-opacity duration-300;
 
   &.transparent {
     @apply bg-transparent backdrop-blur-none pointer-events-none;
   }
 
   &.hide {
-    @apply hidden pointer-events-none select-none;
+    @apply opacity-0 pointer-events-none select-none;
   }
 }
 
@@ -111,10 +111,14 @@ nav {
 }
 
 .interlude {
-  @apply fixed top-0 left-0 z-40 h-screen w-full p-6 md:p-24 flex items-center justify-center bg-black bg-opacity-90 backdrop-blur-sm text-white;
+  @apply fixed top-0 left-0 z-40 h-screen w-full p-6 md:p-24 flex items-center justify-center bg-black bg-opacity-90 backdrop-blur-sm text-white transition-opacity duration-300;
 
   img {
     @apply w-full h-full object-contain;
+  }
+
+  &.hide {
+    @apply opacity-0 pointer-events-none select-none;
   }
 }
 
@@ -123,7 +127,11 @@ nav {
 }
 
 .shop {
-  @apply w-full grid grid-cols-1 md:grid-cols-3 gap-24 md:px-4;
+  @apply w-full grid grid-cols-1 md:grid-cols-3 gap-24 md:px-4 transition-opacity duration-300;
+
+  &.hide {
+    @apply opacity-0 pointer-events-none select-none;
+  }
 }
 
 .page {
