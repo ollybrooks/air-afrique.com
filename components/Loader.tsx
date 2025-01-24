@@ -4,10 +4,11 @@ import Image from "next/image";
 export default function Loader({ images }: { images: any }) {
 
   const [current, setCurrent] = useState(0);
+  const total = 3000;
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (current < 20) {
+      if (current < total/100) {
         setCurrent(current + 1);
       } else {
         clearInterval(interval);
@@ -23,9 +24,11 @@ export default function Loader({ images }: { images: any }) {
     setHeight(window.innerHeight);
   }, []);
 
+  // Need to ensure images are loaded before animation starts
+
   return (
-    <div className={`loader transition-opacity duration-500 bg-white ${current >= 15 ? 'opacity-0 pointer-events-none select-none' : 'opacity-100'}`}>
-      <div className={`w-full h-full relative transition-opacity duration-500 ${current >= 10 ? 'opacity-0' : 'opacity-100'}`}>
+    <div className={`loader transition-opacity duration-500 bg-white ${current >= 20 ? 'opacity-0 pointer-events-none select-none' : 'opacity-100'}`}>
+      <div className={`w-full h-full relative transition-opacity duration-500 ${current >= 15 ? 'opacity-0' : 'opacity-100'}`}>
         {images.map((image: any, index: number) => (
           <div 
             key={index} 
@@ -45,7 +48,7 @@ export default function Loader({ images }: { images: any }) {
         className="fixed top-0 left-0 w-full flex flex-col justify-center items-center transition-transform duration-500"
         style={{
           height: `${height}px`,
-          transform: `translate(0, ${current >= 10 ? (window.innerWidth < 768 && window.innerHeight > 900) ? '-437px' : '-402px' : '0'}) scale(${current >= 10 ? window.innerWidth < 768 ? '0.575' : '0.3925' : '1'})`,
+          transform: `translate(0, ${current >= 15 ? (window.innerWidth < 768 && window.innerHeight > 900) ? '-437px' : '-402px' : '0'}) scale(${current >= 15 ? window.innerWidth < 768 ? '0.575' : '0.3925' : '1'})`,
         }}
       >
         <div className={`text-white title uppercase text-2xl md:text-6xl transition-opacity duration-300 ${current >= 10 ? 'opacity-0' : 'opacity-100'}`}>

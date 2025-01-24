@@ -19,9 +19,11 @@ export default function Editorial({ articles, general, editorial }: { articles: 
       <div className="editorial">
         <div className="hero">
           <div>
-            <div className="text-3xl font-medium uppercase title p-4 md:p-0">
-              {hero.title}
-            </div>
+            <Link href={`/editorial/${hero.slug}`}>
+              <div className="text-3xl font-medium uppercase title p-4 md:p-0">
+                {hero.title}
+              </div>
+            </Link>
             <Link 
               href={`/editorial/${hero.slug}`} 
               className="text-sm uppercase font-medium text-[var(--red)] tracking-wider mt-4 hidden md:block"
@@ -30,17 +32,19 @@ export default function Editorial({ articles, general, editorial }: { articles: 
             </Link>
           </div>
           <div>
-            <Image 
-              src={hero.heroImage}
-              alt={hero.title}
-              width={1200}
-              height={800}
-              className="w-full h-auto"
-            />
+            <Link href={`/editorial/${hero.slug}`}>
+              <Image 
+                src={hero.heroImage}
+                alt={hero.title}
+                width={1200}
+                height={800}
+                className="w-full h-auto"
+              />
+            </Link>
           </div>
           <div className="p-4 md:p-0">
             <p className="serif leading-[18.5px]">{hero.summary}</p>
-            <p className="futura uppercase mt-2">{hero.credits}</p>
+            <p className="futura text-sm uppercase mt-2">{hero.credits}</p>
             <Link 
               href={`/editorial/${hero.slug}`} 
               className="text-xs uppercase font-medium text-[var(--red)] tracking-wider mt-8 block md:hidden"

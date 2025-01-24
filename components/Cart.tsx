@@ -3,7 +3,7 @@ import Tint from "./Tint";
 import { useState } from "react";
 import Image from "next/image";
 
-export default function Cart() {
+export default function Cart({ setCartOpen }: { setCartOpen: any }) {
 
   // const [items, setItems] = useState(3);
 
@@ -41,8 +41,8 @@ export default function Cart() {
   }
 
   return(
-    <div className="cart">
-      <div className="modal">
+    <div className="cart" onClick={() => setCartOpen(false)}>
+      <div className="modal" onClick={(e) => e.stopPropagation()}>
         <Tint />
         {/* Header */}
         {items.length <= 0 ? 

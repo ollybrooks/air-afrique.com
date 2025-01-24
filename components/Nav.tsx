@@ -1,15 +1,27 @@
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Menu from "./Menu";
 import Cart from "./Cart";
 import { useRouter } from "next/router";
 
-export default function Nav() {
+export default function Nav({ cartControl }: { cartControl?: boolean }) {
 
   const router = useRouter();
 
   const [menu, setMenu] = useState(false);
   const [cart, setCart] = useState(false);
+
+  const toggleCart = (newState: boolean) => {
+    setCart(newState);
+    // if (cartControl) cartControl(newState);
+    if (newState) setMenu(false);
+  };
+
+  useEffect(() => {
+    if (cartControl) {
+      setCart(true);
+    }
+  }, [cartControl]);
 
   return(
     <>
@@ -45,14 +57,13 @@ export default function Nav() {
           </Link>
         </div>
         <div className="w-12 md:w-24">
-          <button onClick={() => {
-            setCart(!cart);
-            if (!cart) setMenu(false);
-          }}>{!cart ? "Cart" : "(Close)"}</button>
+          <button onClick={() => toggleCart(!cart)}>
+            {!cart ? "Cart" : "(Close)"}
+          </button>
         </div>
       </nav>
       {menu && <Menu />}
-      {cart && <Cart />}
+      {cart && <Cart setCartOpen={setCart} />}
     </>
   );
 }

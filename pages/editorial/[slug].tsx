@@ -144,7 +144,7 @@ export default function ArticlePage({ article, general }: Props) {
         <div className={`absolute top-0 left-0 bg-[var(--green)] opacity-80 h-full`} style={{
           width: `${scrollAmount * 100}%`
         }} />
-        {current > 0 && <div className={`absolute top-0 left-0 bg-[var(--green)] opacity-80 h-full`} style={{
+        {current > 0 && <div className={`absolute top-0 left-0 bg-[var(--green)] opacity-80 h-full md:hidden`} style={{
           width: `${(100 / article.images.length) * (current+1)}%`
         }} />}
         <div className="relative text-xs font-medium">

@@ -1,7 +1,15 @@
 import Head from "next/head";
 import Nav from "./Nav";
 
-export default function Layout({ metadata, children }: { metadata: any, children?: React.ReactNode }) {
+export default function Layout({ 
+  metadata, 
+  children,
+  setCartOpen 
+}: { 
+  metadata: any, 
+  children?: React.ReactNode,
+  setCartOpen?: boolean
+}) {
 
   return(
     <>
@@ -21,7 +29,7 @@ export default function Layout({ metadata, children }: { metadata: any, children
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Nav />
+        <Nav cartControl={setCartOpen} />
         {children}
       </main>
     </>

@@ -81,6 +81,7 @@ nav {
 .futura {
   font-family: "FuturaBook", "Futura", sans-serif;
   letter-spacing: -0.05em;
+  line-height: 1.2;
 }
 
 /**/
@@ -105,7 +106,7 @@ nav {
   @apply fixed top-0 right-0 z-20 h-screen w-full p-6 pt-24 flex items-start justify-center gap-4 text-xl;
 
   .modal {
-    @apply bg-white bg-opacity-30 backdrop-blur-lg w-full max-w-xs rounded-xl p-8 overflow-hidden;
+    @apply bg-white bg-opacity-30 backdrop-blur-lg w-full max-w-xs rounded-xl p-6 overflow-hidden;
   }
 }
 

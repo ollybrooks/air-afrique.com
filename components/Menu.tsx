@@ -85,28 +85,48 @@ export default function Menu() {
     fetchProductCount();
   }, [locale]);
 
+  const [background, setBackground] = useState("transparent");
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    setCursorPosition({
+      x: e.clientX,
+      y: e.clientY
+    });
+  };
+
   return(
-    <div className={`menu`}>
+    <div className={`menu`} onMouseMove={handleMouseMove}>
       <Tint />
 
       <div className="relative z-10 flex flex-col md:flex-row w-full h-3/4 items-center justify-around text-xl md:text-3xl">
-        <div>
+        <div onMouseEnter={() => setBackground("var(--yellow)")} onMouseLeave={() => setBackground("transparent")}>
           <Link href="/shop">{t.menu.shop}</Link>
         </div>
-        <div>
+        <div onMouseEnter={() => setBackground("var(--green)")} onMouseLeave={() => setBackground("transparent")}>
           <Link href="/editorial">{t.menu.editorial}</Link>
         </div>
-        <div>
+        <div onMouseEnter={() => setBackground("var(--red)")} onMouseLeave={() => setBackground("transparent")}>
           <Link href="/about">{t.menu.about}</Link>
         </div>
+
+        {background !== "transparent" && <img 
+          src="/example.png" 
+          alt="cursor" 
+          className="h-72 absolute z-10 pointer-events-none select-none" 
+          style={{ 
+            left: `${cursorPosition.x - 222}px`, 
+            top: `${cursorPosition.y - 266}px` 
+          }} 
+        />}
       </div>
 
       <div className="absolute z-10 bottom-8 md:bottom-auto md:top-0 right-0 p-4 md:p-6 text-xl md:text-3xl pointer-events-auto">
         <LanguageSwitcher />
       </div>
 
-      <div className="absolute bottom-0 left-0 w-full h-full md:h-auto p-4 pt-20 flex flex-col md:flex-row justify-between items-end text-[8px] md:text-sm font-medium">
-        <div className="flex gap-8 justify-between md:justify-start uppercase w-full md:w-auto">
+      <div className="absolute bottom-0 left-0 w-full h-full md:h-auto p-4 pt-20 flex flex-col md:flex-row justify-between items-end text-[8px] md:text-xs font-medium">
+        <div className="flex md:hidden xl:flex gap-8 justify-between md:justify-start uppercase w-full md:w-auto">
           <div className="grid grid-cols-[auto_auto] gap-4 whitespace-nowrap">
             <div>
               <div>Date</div>

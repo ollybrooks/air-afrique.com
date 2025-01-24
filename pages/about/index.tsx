@@ -52,6 +52,8 @@ export default function About({ data, general }: { data: any, general: any }) {
     });
   }
 
+  // Preload images
+
   return(
     <Layout metadata={general}>
       <div 
@@ -75,7 +77,7 @@ export default function About({ data, general }: { data: any, general: any }) {
             />
           ))}
         </div>
-        <div className="relative text-center text-xl md:text-4xl font-medium tracking-[-0.01em] max-w-5xl mx-auto select-none mt-48 px-4 md:px-0">
+        <div className="relative text-center text-xl md:text-4xl font-medium tracking-[-0.01em] max-w-5xl mx-auto mt-48 px-4 md:px-0">
           <PortableText value={data.content} />
         </div>
         <div className="relative flex flex-col gap-4 md:gap-8 my-36 text-center items-center select-none">

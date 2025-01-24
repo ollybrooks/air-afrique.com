@@ -3,7 +3,7 @@ import { GetStaticProps, GetStaticPaths } from 'next';
 import client from '@/shopify/client';
 import { getGeneral } from "@/sanity/utils";
 import { useCart } from "@/context/cart";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // Add types for the product
 interface ProductPageProps {
@@ -16,20 +16,33 @@ export default function ProductPage({ product, general }: ProductPageProps) {
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
   const [selectedVariant, setSelectedVariant] = useState(product.variants[0]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const handleVariant = (variant: any) => {
     setSelectedVariant(variant);
     setAdded(false);
   }
 
+  useEffect(() => {
+    if (added) {
+      const timeout = setTimeout(() => {
+        setAdded(false);
+        setIsCartOpen(false);
+      }, 1000);
+      return () => clearTimeout(timeout);
+    }
+  }, [added]);
+
   return(
-    <Layout metadata={general}>
+    <Layout metadata={general} setCartOpen={isCartOpen}>
       <div className="page">
-        <div className="md:pt-24">
-          <div 
-            className="font-medium p-4 md:p-0"
-            dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
-          />
+        <div className="min-h-screen flex items-center">
+          <div className="overflow-y-auto max-h-screen md:pt-24">
+            <div 
+              className="font-medium p-4 md:p-0"
+              dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
+            />
+          </div>
         </div>
         <div className="flex flex-col justify-center gap-24 overflow-y-scroll">
           {product.images.map((image: any, index: any) => (
@@ -49,13 +62,17 @@ export default function ProductPage({ product, general }: ProductPageProps) {
             </div>
           )}
           <button 
-            className="serif w-full border-t md:border-y border-black py-2 text-2xl md:text-3xl font-bold" 
+            className="serif w-full border-t md:border-y bg-white border-black py-2 text-2xl md:text-3xl font-bold relative group overflow-hidden" 
             onClick={() => {
-              addItem(product)
-              setAdded(true)
+              addItem(product);
+              setAdded(true);
+              setIsCartOpen(true);
             }}
           >
-            {added ? "Added" : "Add To Cart"}
+            <span className="relative z-10 text-white mix-blend-difference">
+              {added ? "Added" : "Add To Cart"}
+            </span>
+            <div className="absolute inset-0 bg-black w-full h-full -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-in-out" />
           </button>
         </div>
       </div>
