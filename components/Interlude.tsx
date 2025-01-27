@@ -15,6 +15,7 @@ export default function Interlude({ visible, onComplete, content }: InterludePro
     if (visible) {
       const startTime = Date.now();
       const duration = 3000; // 3 seconds
+      const completeOffset = 500; // Call onComplete 500ms before end
 
       const updateProgress = () => {
         const currentTime = Date.now();
@@ -23,10 +24,13 @@ export default function Interlude({ visible, onComplete, content }: InterludePro
         
         setProgress(newProgress);
 
+        if (elapsed >= duration - completeOffset && elapsed < duration - completeOffset + 50) {
+          // Call onComplete when 500ms remaining
+          onComplete();
+        }
+
         if (elapsed < duration) {
           requestAnimationFrame(updateProgress);
-        } else {
-          onComplete();
         }
       };
 

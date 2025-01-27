@@ -4,7 +4,7 @@ import Menu from "./Menu";
 import Cart from "./Cart";
 import { useRouter } from "next/router";
 
-export default function Nav({ cartControl }: { cartControl?: boolean }) {
+export default function Nav({ cartControl, menuItems }: { cartControl?: boolean, menuItems?: any }) {
 
   const router = useRouter();
 
@@ -62,7 +62,7 @@ export default function Nav({ cartControl }: { cartControl?: boolean }) {
           </button>
         </div>
       </nav>
-      <Menu visible={menu} />
+      <Menu visible={menu} menuItems={menuItems} />
       {cart && <Cart setCartOpen={setCart} />}
     </>
   );

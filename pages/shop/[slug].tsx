@@ -69,7 +69,7 @@ export default function ProductPage({ product, general }: ProductPageProps) {
               setIsCartOpen(true);
             }}
           >
-            <span className="relative z-10 text-white mix-blend-difference">
+            <span className="relative z-10 group-hover:text-white transition-colors duration-500 ease-in-out">
               {added ? "Added" : "Add To Cart"}
             </span>
             <div className="absolute inset-0 bg-black w-full h-full -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-in-out" />

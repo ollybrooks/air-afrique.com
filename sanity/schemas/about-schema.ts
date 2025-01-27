@@ -39,6 +39,12 @@ const about = {
           }
         ]
       }]
+    },
+    {
+      name: "images",
+      title: "Images",
+      type: "array",
+      of: [{ type: "image" }]
     }
   ],
 }

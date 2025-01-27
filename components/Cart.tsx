@@ -5,10 +5,7 @@ import Image from "next/image";
 
 export default function Cart({ setCartOpen }: { setCartOpen: any }) {
 
-  // const [items, setItems] = useState(3);
-
   const { items, addItem, removeItem, totalPrice, totalItems, updateQuantity, clearCart } = useCart();
-
 
   const [loadingCheckout, setLoadingCheckout] = useState(false);
 
@@ -89,13 +86,16 @@ export default function Cart({ setCartOpen }: { setCartOpen: any }) {
             </div>
             <p className="text-xs">VAT and shipping are calculated at checkout.</p>
           </div>
-          <div className="border-y border-black text-center p-2">
+          <div className="">
             <button 
-              className="serif font-bold text-2xl" 
+              className="relative w-full serif font-bold text-2xl group overflow-hidden border-y border-black text-center p-2" 
               onClick={handleCheckout} 
               disabled={loadingCheckout}
             >
-              {loadingCheckout ? 'Loading...' : 'Checkout'}
+              <span className="relative z-10 group-hover:text-white transition-colors duration-500 ease-in-out">
+                {loadingCheckout ? 'Loading...' : 'Checkout'}
+              </span>
+              <div className="absolute inset-0 bg-black w-full h-full -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-in-out" />
             </button>
           </div>
         </div>}

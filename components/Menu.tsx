@@ -3,13 +3,14 @@ import { useRouter } from "next/router";
 import fr from "../locales/fr";
 import en from "../locales/en";
 import Tint from "./Tint";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useTime } from "../context/time";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { getArticles } from "../sanity/utils";
 import client from "@/shopify/client";
+import Image from "next/image";
 
-export default function Menu({ visible }: { visible: boolean }) {
+export default function Menu({ visible, menuItems }: { visible: boolean, menuItems: any }) {
 
   const router = useRouter();
   const { locale = "fr" } = router || {};
@@ -85,19 +86,27 @@ export default function Menu({ visible }: { visible: boolean }) {
     fetchProductCount();
   }, [locale]);
 
+  const menuRef = useRef<HTMLDivElement>(null);
   const [background, setBackground] = useState("transparent");
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    setCursorPosition({
-      x: e.clientX,
-      y: e.clientY
-    });
+    if (menuRef.current) {
+      const rect = menuRef.current.getBoundingClientRect();
+      const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      
+      setCursorPosition({
+        x: e.clientX - rect.left - scrollLeft,
+        y: e.clientY - rect.top - scrollTop
+      });
+    }
   };
 
   const [currentDate, setCurrentDate] = useState(""); 
   const [localTime, setLocalTime] = useState("");
   const [destinationTime, setDestinationTime] = useState("");
+  const [image, setImage] = useState("");
 
   useEffect(() => {
     const updateTimes = () => {
@@ -112,30 +121,48 @@ export default function Menu({ visible }: { visible: boolean }) {
     return () => clearInterval(interval);
   }, []);
 
+  const handleHover = (item: string) => {
+    if (item === "shop") {
+      setBackground("var(--yellow)");
+      setImage(menuItems.find((item: any) => item.type === "shop")?.image);
+    } else if (item === "editorial") {
+      setBackground("var(--green)");
+      setImage(menuItems.find((item: any) => item.type === "editorial")?.image);
+    } else if (item === "about") {
+      setBackground("var(--red)");
+      setImage(menuItems.find((item: any) => item.type === "about")?.image);
+    }
+  }
+
   return(
     <div className={`menu ${visible ? "" : "hide"}`} onMouseMove={handleMouseMove}>
       <Tint />
 
-      <div className="relative z-10 flex flex-col md:flex-row w-full h-3/4 items-center justify-around text-xl md:text-3xl">
-        <div onMouseEnter={() => setBackground("var(--yellow)")} onMouseLeave={() => setBackground("transparent")}>
+      <div ref={menuRef} className="relative z-10 flex flex-col md:flex-row w-full h-3/4 items-center justify-around text-xl md:text-3xl">
+        <div onMouseEnter={() => handleHover("shop")} onMouseLeave={() => setBackground("transparent")}>
           <Link href="/shop">{t.menu.shop}</Link>
         </div>
-        <div onMouseEnter={() => setBackground("var(--green)")} onMouseLeave={() => setBackground("transparent")}>
+        <div onMouseEnter={() => handleHover("editorial")} onMouseLeave={() => setBackground("transparent")}>
           <Link href="/editorial">{t.menu.editorial}</Link>
         </div>
-        <div onMouseEnter={() => setBackground("var(--red)")} onMouseLeave={() => setBackground("transparent")}>
+        <div onMouseEnter={() => handleHover("about")} onMouseLeave={() => setBackground("transparent")}>
           <Link href="/about">{t.menu.about}</Link>
         </div>
 
-        {background !== "transparent" && <img 
-          src="/example.png" 
-          alt="cursor" 
-          className="h-72 absolute z-10 pointer-events-none select-none" 
-          style={{ 
-            left: `${cursorPosition.x - 222}px`, 
-            top: `${cursorPosition.y - 266}px` 
-          }} 
-        />}
+        {background !== "transparent" && 
+          <Image
+            src={image}
+            alt="cursor"
+            width={428}
+            height={428}
+            className="absolute z-10 pointer-events-none select-none hidden md:block"
+            style={{
+              left: `${cursorPosition.x}px`,
+              top: `${cursorPosition.y}px`,
+              transform: 'translate(-50%, -50%)'
+            }}
+          />
+        }
       </div>
 
       <div className="absolute z-10 bottom-8 md:bottom-auto md:top-0 right-0 p-4 md:p-6 text-xl md:text-3xl pointer-events-auto">

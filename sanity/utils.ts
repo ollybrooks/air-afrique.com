@@ -12,8 +12,14 @@ export const getGeneral = async (locale: string) => {
     groq`*[_type == "general"][0]{
       _updatedAt,
       _id,
-      "title": coalesce(title[$locale], title.fr),
-      "description": coalesce(description[$locale], description.fr)
+      title,
+      description,
+      keywords,
+      "shareImage": shareImage.asset->url,
+      "menuItems": menuItems[]{
+        type,
+        "image": image.asset->url
+      }
     }`,
     { locale }
   )
@@ -38,7 +44,10 @@ export const getAbout = async (locale: string) => {
       _id,
       title,
       "content": coalesce(content[$locale], content.fr),
-      team
+      team,
+      "images": images[]{
+        "url": asset->url,
+      }
     }`,
     { locale }
   )

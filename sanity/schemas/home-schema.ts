@@ -14,7 +14,7 @@ const home = {
       description: "Images to display in the pre-loader",
       title: "Images",
       of: [{ type: "image" }],
-    },
+    }
   ],
 };
 

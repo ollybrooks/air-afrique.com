@@ -89,7 +89,7 @@ export default function ArticlePage({ article, general }: Props) {
         <div 
           ref={imagesContainerRef} 
           className="fixed top-0 left-0 w-full md:relative flex flex-col justify-center md:justify-normal items-center py-24 overflow-y-scroll h-[50vh] md:h-auto border-b border-black md:border-b-0"
-       >
+        >
           {article.images.map((image, index) => (
             <div 
               key={index} 
@@ -110,6 +110,10 @@ export default function ArticlePage({ article, general }: Props) {
             <div className="text-[10px] serif"><sup>{current}</sup> {article.images[current].caption}</div>
             <button className="text-[8px] leading-[9.5px] serif" onClick={() => setShowReferences(true)}>REFERENCES</button>
           </div>
+          {/* <div className="fixed top-0 left-1/3 border border-pink-500 w-1/3 h-screen flex-col hidden md:flex">
+            <button className="w-full h-1/2 bg-pink-200 bg-opacity-50" onClick={() => scrollToImage(current-1)}></button>
+            <button className="w-full h-1/2 bg-sky-200 bg-opacity-50" onClick={() => scrollToImage(current+1)}></button>
+          </div> */}
         </div>
         <div className="pt-48 serif flex-col gap-2 items-start hidden md:flex">
           {article.images.map((image, index) => (

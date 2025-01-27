@@ -19,41 +19,42 @@ export default function About({ data, general }: { data: any, general: any }) {
     const currentIndex = colours.indexOf(colour);
     const nextIndex = (currentIndex + 1) % colours.length;
     setColour(colours[nextIndex]);
-    setImages(prev => {
-      const newImage = {
-        x: 0,
-        y: 0
-      };
-      
-      // Try up to 50 times to find a non-overlapping position
-      let attempts = 0;
-      let foundSpot = false;
-      
-      while (!foundSpot && attempts < 50) {
-        newImage.x = Math.random() * 80; // Leave 10% padding on edges
-        newImage.y = Math.random() * 80;
+    
+    if (images.length < data.images.length) {
+      setImages(prev => {
+        const newImage = {
+          x: 0,
+          y: 0
+        };
         
-        foundSpot = true;
-        // Check against all existing images
-        for (const existing of prev) {
-          // Calculate if too close (within 20% of viewport)
-          const tooClose = 
-            Math.abs(existing.x - newImage.x) < 20 &&
-            Math.abs(existing.y - newImage.y) < 20;
+        // Try up to 50 times to find a non-overlapping position
+        let attempts = 0;
+        let foundSpot = false;
+        
+        while (!foundSpot && attempts < 50) {
+          newImage.x = Math.random() * 80; // Leave 10% padding on edges
+          newImage.y = Math.random() * 80;
           
-          if (tooClose) {
-            foundSpot = false;
-            break;
+          foundSpot = true;
+          // Check against all existing images
+          for (const existing of prev) {
+            // Calculate if too close (within 20% of viewport)
+            const tooClose = 
+              Math.abs(existing.x - newImage.x) < 20 &&
+              Math.abs(existing.y - newImage.y) < 20;
+            
+            if (tooClose) {
+              foundSpot = false;
+              break;
+            }
           }
+          attempts++;
         }
-        attempts++;
-      }
 
-      return [...prev, newImage].slice(0, 16);
-    });
+        return [...prev, newImage];
+      });
+    }
   }
-
-  // Preload images
 
   return(
     <Layout metadata={general}>
@@ -68,9 +69,9 @@ export default function About({ data, general }: { data: any, general: any }) {
           {images.map((image, index) => (
             <Image
               key={index}
-              src={`/img/0${index + 1}.png`}
+              src={`${data.images[index].url}`}
               alt={`Air Afrique ${index + 1}`}
-              className="absolute max-w-48 max-h-48"
+              className="absolute"
               width={192}
               height={192}
               style={{

@@ -7,7 +7,7 @@ export default function Home({ general, home }: { general: any, home: any }) {
   return (
     <Layout metadata={general}>
       <Loader images={home.images}/>
-      <MenuSection />
+      <MenuSection menuItems={general.menuItems} />
     </Layout>
   );
 }

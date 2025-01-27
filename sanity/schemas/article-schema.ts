@@ -33,7 +33,7 @@ const article = {
     },
     {
       name: 'date',
-      title: 'Date',
+      title: 'Published Date',
       type: 'date',
       initialValue: new Date().toISOString().split('T')[0]
     },
