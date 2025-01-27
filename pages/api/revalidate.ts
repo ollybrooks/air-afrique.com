@@ -45,8 +45,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     "/privacy",
     "/shipping",
     "/terms",
-    ...articles.map((article: any) => `/editorial/${article.slug.current}`),
-    ...products.map((product: any) => `/shop/${product.slug.current}`)
+    ...articles.map((article: any) => `/editorial/${article.slug}`),
+    ...products.map((product: any) => `/shop/${product.handle}`)
   ]
 
   // Create localized versions of all routes
