@@ -33,9 +33,11 @@ export default function Cart({ setCartOpen }: { setCartOpen: any }) {
     const data = await response.json();
     // console.log(data);
     window.location.href = data.checkoutUrl;
-    setLoadingCheckout(false);
+    // setLoadingCheckout(false);
     // clearCart();
   }
+
+  // console.log(items);
 
   return(
     <div className="cart" onClick={() => setCartOpen(false)}>
@@ -47,7 +49,7 @@ export default function Cart({ setCartOpen }: { setCartOpen: any }) {
           <div className="relative text-3xl font-medium text-center">Cart</div>
         }
         {/* Items */}
-        {items.length > 0 && <div className="relative flex flex-col gap-8 my-8 font-medium text-xs leading-tight">
+        {items.length > 0 && <div className="relative flex flex-col max-h-[55vh] overflow-y-scroll gap-8 my-8 font-medium text-xs leading-tight">
           {items.map((item, index) => (
             <div className="flex gap-4" key={index}>
               <div className="aspect-square w-1/3">
@@ -61,17 +63,17 @@ export default function Cart({ setCartOpen }: { setCartOpen: any }) {
               </div>
               <div className="flex flex-col justify-between">
                 <div>
-                  <div>{item.title}</div>
-                  <div>€{item.variants[0]?.price.amount}</div>
+                  <div>{item.title} {item.variants.length > 1 && `(${item.variants.find(v => v.id === item.variantId)?.title})`}</div>
+                  <div>€{Number(item.variants[0]?.price.amount).toFixed(2)}</div>
                   <div className="flex gap-2">
-                    <button className="text-xs" onClick={() => updateQuantity(item.id, item.quantity - 1)}>-</button>
+                    <button className="text-xs" onClick={() => updateQuantity(item.variantId, item.quantity - 1)}>-</button>
                     <div>{item.quantity}</div>
-                    <button className="text-xs" onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
+                    <button className="text-xs" onClick={() => updateQuantity(item.variantId, item.quantity + 1)}>+</button>
                   </div>
                 </div>
                 <div className="flex gap-4">
                   <div>Item Total</div>
-                  <div>€{item.variants[0]?.price.amount * item.quantity}</div>
+                  <div>€{item.variants.find(v => v.id === item.variantId)?.price.amount * item.quantity}</div>
                 </div>
               </div>
             </div>
@@ -82,7 +84,7 @@ export default function Cart({ setCartOpen }: { setCartOpen: any }) {
           <div className="font-medium my-4">
             <div className="flex justify-between items-center text-sm">
               <div>SUBTOTAL</div>
-              <div>€{items.reduce((acc: any, item: any) => acc + item.price?.amount * item.quantity, 0)}</div>
+              <div>€{items.reduce((acc: any, item: any) => acc + item.variants.find((v: any) => v.id === item.variantId)?.price.amount * item.quantity, 0)}</div>
             </div>
             <p className="text-xs">VAT and shipping are calculated at checkout.</p>
           </div>

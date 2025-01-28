@@ -61,17 +61,17 @@ export default function About({ data, general }: { data: any, general: any }) {
       <div 
         className={`absolute top-0 left-0 w-full min-h-screen pt-24`}
         style={{
-          background: colour
+          background: colour,
         }}
         onClick={handleClick}
       >
-        <div className="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none select-none">
+        <div className="fixed top-0 left-0 w-full h-screen overflow-hidden pointer-events-none select-none">
           {images.map((image, index) => (
             <Image
               key={index}
               src={`${data.images[index].url}`}
               alt={`Air Afrique ${index + 1}`}
-              className="absolute"
+              className="absolute max-w-24 md:max-w-none"
               width={192}
               height={192}
               style={{

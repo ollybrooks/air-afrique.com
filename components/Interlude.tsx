@@ -50,8 +50,8 @@ export default function Interlude({ visible, onComplete, content }: InterludePro
 
   return(
     <div className={`interlude ${visible ? "" : "hide"}`}>
-      <div className="h-full">
-        <div className="relative h-full">
+      <div>
+        <div className="h-[calc(100%-2px)] relative">
           <Image 
             src={content.image} 
             alt={content.credits} 
@@ -60,7 +60,7 @@ export default function Interlude({ visible, onComplete, content }: InterludePro
             // className="w-full h-auto" 
           />
           <div className="absolute bottom-0 left-0 p-2 min-h-24 w-full flex flex-col justify-end bg-gradient-to-t from-black/90 to-transparent">
-            <p className="serif text-xs">{content.description}</p>
+            <p className="serif text-xs w-full max-w-xs md:max-w-sm text-balance mb-1">{content.description}</p>
             <p className="uppercase text-xs futura">{content.credits}</p>
           </div>
         </div>

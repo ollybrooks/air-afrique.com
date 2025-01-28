@@ -209,7 +209,7 @@ export default function Menu({ visible, menuItems }: { visible: boolean, menuIte
             <div>contact@air-afrique.com</div>
             <div>9 rue des colonnes 75002, Paris FR</div>
           </div>
-          <div className="uppercase w-full md:w-auto absolute md:relative bottom-0 left-0 flex flex-row md:flex-col gap-4 p-4 md:p-0 md:gap-0 justify-between md:justify-start whitespace-nowrap">
+          <div className="uppercase w-full md:w-auto absolute md:relative bottom-0 left-0 flex flex-row md:flex-col gap-2 p-4 md:p-0 md:gap-0 justify-between md:justify-start whitespace-nowrap">
             <div>
               <a href="https://www.instagram.com/airafrique_" target="_blank" rel="noopener noreferrer">Instagram</a>
             </div>

@@ -26,7 +26,7 @@ export default function Nav({ cartControl, menuItems }: { cartControl?: boolean,
   return(
     <>
       <nav>
-        <div className="w-12 md:w-24 text-right">
+        <div className="w-12 md:w-24 text-left md:text-right">
           <button 
             onClick={() => {
               setMenu(!menu);
@@ -56,7 +56,7 @@ export default function Nav({ cartControl, menuItems }: { cartControl?: boolean,
             </svg>
           </Link>
         </div>
-        <div className="w-12 md:w-24">
+        <div className="w-12 md:w-24 text-right md:text-left flex justify-end md:block">
           <button onClick={() => toggleCart(!cart)}>
             {!cart ? "Cart" : "(Close)"}
           </button>

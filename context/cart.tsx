@@ -15,7 +15,7 @@ interface CartContextType {
   items: CartItem[];
   addItem: (item: CartItem) => void;
   removeItem: (id: string) => void;
-  updateQuantity: (id: string, quantity: number) => void;
+  updateQuantity: (variantId: string, newQuantity: number) => void;
   clearCart: () => void;
   totalItems: number;
   totalPrice: number;
@@ -45,23 +45,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       newItem.quantity = 1;
     }
 
-    // Assume newItem has a variants array and we need to use the first variant
-    const { title, variants } = newItem;
-    const variant = variants[0];
-
     setItems(currentItems => {
-      const existingItem = currentItems.find(item => item.variantId === variant.id);
+      // Check if item with same variant ID exists
+      const existingItem = currentItems.find(item => item.variantId === newItem.variantId);
       
       if (existingItem) {
         return currentItems.map(item =>
-          item.variantId === variant.id
+          item.variantId === newItem.variantId
             ? { ...item, quantity: item.quantity + newItem.quantity }
             : item
         );
       }
       
-      // For new items, ensure we're using the validated quantity, variant, and price
-      return [...currentItems, { ...newItem, variantId: variant.id, title, price: variant.price }];
+      // Add new item
+      return [...currentItems, newItem];
     });
   };
 
@@ -69,15 +66,18 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setItems(currentItems => currentItems.filter(item => item.id !== id));
   };
 
-  const updateQuantity = (id: string, quantity: number) => {
-    if (quantity <= 0) {
-      removeItem(id);
+  const updateQuantity = (variantId: string, newQuantity: number) => {
+    if (newQuantity < 1) {
+      // Remove item if quantity is less than 1
+      setItems(currentItems => currentItems.filter(item => item.variantId !== variantId));
       return;
     }
 
     setItems(currentItems =>
       currentItems.map(item =>
-        item.id === id ? { ...item, quantity } : item
+        item.variantId === variantId
+          ? { ...item, quantity: newQuantity }
+          : item
       )
     );
   };

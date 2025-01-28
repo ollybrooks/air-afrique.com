@@ -77,9 +77,10 @@ export default function ArticlePage({ article, general }: Props) {
   return (
     <Layout metadata={general}>
       <div className="page h-full" style={{
-        background: article.background === "green" ? "var(--green)" : ""
+        background: article.background === "green" ? "var(--green)" : "",
+        height: "100dvh"
       }}>
-        <div className="absolute left-0 bottom-0 w-full h-[50vh] md:h-auto md:relative px-4 pt-8 pb-12 md:px-0 md:py-24 overflow-y-scroll" ref={textContainerRef}>
+        <div className="absolute left-0 bottom-0 w-full h-1/2 md:h-auto md:relative px-4 pt-8 pb-12 md:px-0 md:py-24 overflow-y-scroll" ref={textContainerRef}>
           <h1 className="text-3xl font-bold uppercase title">{article.title}</h1>
           <h2 className="text-xs uppercase my-4 futura whitespace-pre-wrap">{article.credits}</h2>
           <div className="font-medium text-sm leading-[17px] mt-8 text-justify">
@@ -88,12 +89,12 @@ export default function ArticlePage({ article, general }: Props) {
         </div>
         <div 
           ref={imagesContainerRef} 
-          className="fixed top-0 left-0 w-full md:relative flex flex-col justify-center md:justify-normal items-center py-24 overflow-y-scroll h-[50vh] md:h-auto border-b border-black md:border-b-0"
+          className="fixed top-0 left-0 w-full md:relative flex flex-col justify-center md:justify-normal items-center py-24 overflow-y-scroll h-1/2 md:h-auto border-b border-black md:border-b-0"
         >
           {article.images.map((image, index) => (
             <div 
               key={index} 
-              className={`absolute md:relative w-full h-2/3 md:h-auto flex flex-col items-end md:pt-24 ${index === current ? 'opacity-100' : 'opacity-0 md:opacity-100'}`}
+              className={`absolute md:relative w-full h-2/3 md:h-auto flex flex-col items-end pt-6 md:pt-24 ${index === current ? 'opacity-100' : 'opacity-0 md:opacity-100'}`}
               onClick={() => setCurrent(current === article.images.length - 1 ? 0 : current + 1)}
             >
               <Image 
@@ -126,8 +127,15 @@ export default function ArticlePage({ article, general }: Props) {
             </button>
           ))}
         </div>
-        {showReferences && <div className="fixed z-50 top-0 left-0 w-full h-screen bg-white bg-opacity-70 serif block md:hidden">
-          <div className="relative bg-white border-b border-black text-[10px] w-full h-1/2 flex flex-col gap-2 items-start justify-end p-4">
+        {showReferences && <div 
+          className="fixed z-50 top-0 left-0 w-full h-screen bg-white bg-opacity-70 serif block md:hidden" 
+          style={{height: "100dvh"}}
+          onClick={() => setShowReferences(false)}
+        >
+          <div 
+            className="relative bg-white border-b border-black text-[10px] w-full h-1/2 flex flex-col gap-2 items-start justify-end p-4"
+            onClick={e => e.stopPropagation()}
+          >
             {article.images.map((image, index) => (
               <button
                 key={index} 

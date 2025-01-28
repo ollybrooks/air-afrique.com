@@ -4,6 +4,7 @@ import client from '@/shopify/client';
 import { getGeneral } from "@/sanity/utils";
 import { useCart } from "@/context/cart";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 // Add types for the product
 interface ProductPageProps {
@@ -33,20 +34,54 @@ export default function ProductPage({ product, general }: ProductPageProps) {
     }
   }, [added]);
 
+  const [current, setCurrent] = useState(0);
+
+  const handleAddToCart = () => {
+    const cartItem = {
+      id: product.id,
+      variantId: selectedVariant.id,
+      quantity: 1,
+      title: product.title,
+      price: selectedVariant.price.amount,
+      image: product.images[0]?.src,
+      variants: product.variants,
+      images: product.images
+    };
+    
+    addItem(cartItem);
+    setAdded(true);
+    setIsCartOpen(true);
+  };
+
   return(
     <Layout metadata={general} setCartOpen={isCartOpen}>
-      <div className="page">
-        <div className="min-h-screen flex items-center">
-          <div className="overflow-y-auto max-h-screen md:pt-24">
-            <div 
-              className="font-medium p-4 md:p-0"
-              dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
-            />
-          </div>
+      <div className="page" style={{ height: "100dvh"}}>
+        <div className="absolute left-0 bottom-0 w-full h-1/2 md:h-auto md:min-h-screen md:relative p-2 md:px-0 md:py-24 overflow-y-scroll md:flex md:items-center">
+          <div 
+            className="font-medium p-4 md:p-0"
+            dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
+          />
         </div>
-        <div className="flex flex-col justify-center gap-24 overflow-y-scroll">
+        <div 
+          // ref={imagesContainerRef} 
+          className="fixed top-0 left-0 w-full md:relative flex flex-col justify-center md:justify-normal items-center py-24 overflow-y-scroll h-1/2 md:h-auto border-b border-black md:border-b-0"
+        >
           {product.images.map((image: any, index: any) => (
-            <img key={index} src={image.src} alt={product.title} />
+            <div 
+              key={index} 
+              className={`absolute md:relative w-full h-full md:h-auto flex flex-col items-end pt-20 md:pt-24 ${index === current ? 'opacity-100' : 'opacity-0 md:opacity-100'}`}
+              onClick={() => setCurrent(current === product.images.length - 1 ? 0 : current + 1)}
+            >
+              <Image 
+                key={index} 
+                src={image.src}
+                alt={product.title} 
+                width={1200} 
+                height={800} 
+                className="w-full h-full md:h-auto object-contain"
+                priority={index === 0}
+              />
+            </div>
           ))}
         </div>
         <div className="md:h-full flex flex-col justify-center md:gap-4 fixed md:relative bottom-0 left-0 w-full md:w-auto border-t border-black md:border-t-0 bg-white md:bg-transparent">
@@ -55,19 +90,15 @@ export default function ProductPage({ product, general }: ProductPageProps) {
             <div>€{Number(product.variants[0]?.price.amount).toFixed(2)}</div>
           </div>
           {product.variants.length > 1 && (
-            <div className="w-full flex justify-between serif text-[28px] font-bold md:mt-4 px-4 md:p-0">
+            <div className="w-full flex justify-between serif text-xl md:text-[28px] font-bold mb-2 md:mb-0 md:mt-4 px-4 md:p-0">
               {product.variants.map((variant: any) => (
-                <button key={variant.id} onClick={() => handleVariant(variant)}>{variant.title}</button>
+                <button key={variant.id} onClick={() => handleVariant(variant)} className={`${selectedVariant.id === variant.id ? 'underline' : ''}`}>{variant.title}</button>
               ))}
             </div>
           )}
           <button 
             className="serif w-full border-t md:border-y bg-white border-black py-2 text-2xl md:text-3xl font-bold relative group overflow-hidden" 
-            onClick={() => {
-              addItem(product);
-              setAdded(true);
-              setIsCartOpen(true);
-            }}
+            onClick={handleAddToCart}
           >
             <span className="relative z-10 group-hover:text-white transition-colors duration-500 ease-in-out">
               {added ? "Added" : "Add To Cart"}
