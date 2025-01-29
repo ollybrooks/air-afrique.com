@@ -80,8 +80,8 @@ export default function ArticlePage({ article, general }: Props) {
         background: article.background === "green" ? "var(--green)" : "",
         height: "100dvh"
       }}>
-        <div className="absolute left-0 bottom-0 w-full h-1/2 md:h-auto md:relative px-4 pt-8 pb-12 md:px-0 md:py-24 overflow-y-scroll" ref={textContainerRef}>
-          <h1 className="text-3xl font-bold uppercase title">{article.title}</h1>
+        <div className="fixed left-0 bottom-0 w-full h-1/2 md:h-auto md:relative px-4 pt-8 pb-12 md:px-0 md:py-24 overflow-y-scroll" ref={textContainerRef}>
+          <h1 className="text-2xl md:text-3xl font-bold uppercase title">{article.title}</h1>
           <h2 className="text-xs uppercase my-4 futura whitespace-pre-wrap">{article.credits}</h2>
           <div className="font-medium text-sm leading-[17px] mt-8 text-justify">
             <PortableText value={article.content} />
@@ -108,8 +108,8 @@ export default function ArticlePage({ article, general }: Props) {
             </div>
           ))}
           <div className="absolute bottom-0 left-0 p-4 flex justify-between items-end w-full md:hidden">
-            <div className="text-[10px] serif"><sup>{current}</sup> {article.images[current].caption}</div>
-            <button className="text-[8px] leading-[9.5px] serif" onClick={() => setShowReferences(true)}>REFERENCES</button>
+            <div className="text-[10px]  serif"><sup>{current}</sup> {article.images[current].caption}</div>
+            <button className="text-[8px] leading-[13px] serif" onClick={() => setShowReferences(true)}>REFERENCES</button>
           </div>
           {/* <div className="fixed top-0 left-1/3 border border-pink-500 w-1/3 h-screen flex-col hidden md:flex">
             <button className="w-full h-1/2 bg-pink-200 bg-opacity-50" onClick={() => scrollToImage(current-1)}></button>
@@ -156,7 +156,7 @@ export default function ArticlePage({ article, general }: Props) {
         <div className={`absolute top-0 left-0 bg-[var(--green)] opacity-80 h-full`} style={{
           width: `${scrollAmount * 100}%`
         }} />
-        {current > 0 && <div className={`absolute top-0 left-0 bg-[var(--green)] opacity-80 h-full md:hidden`} style={{
+        {current > 0 && article.type === 'image' && <div className={`absolute top-0 left-0 bg-[var(--green)] opacity-80 h-full md:hidden`} style={{
           width: `${(100 / article.images.length) * (current+1)}%`
         }} />}
         <div className="relative text-xs font-medium">

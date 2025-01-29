@@ -45,11 +45,11 @@ export default function Cart({ setCartOpen }: { setCartOpen: any }) {
         <Tint />
         {/* Header */}
         {items.length <= 0 ? 
-          <div className="relative text-center text-3xl font-medium tracking-[-0.01em]">Your cart is empty.</div> : 
+          <div className="relative text-center text-2xl md:text-3xl font-medium tracking-[-0.01em]">Your cart is empty.</div> : 
           <div className="relative text-3xl font-medium text-center">Cart</div>
         }
         {/* Items */}
-        {items.length > 0 && <div className="relative flex flex-col max-h-[55vh] overflow-y-scroll gap-8 my-8 font-medium text-xs leading-tight">
+        {items.length > 0 && <div className="relative flex flex-col max-h-[55vh] overflow-y-scroll gap-8 my-8 font-medium text-xs md:text-sm leading-tight">
           {items.map((item, index) => (
             <div className="flex gap-4" key={index}>
               <div className="aspect-square w-1/3">
@@ -66,9 +66,9 @@ export default function Cart({ setCartOpen }: { setCartOpen: any }) {
                   <div>{item.title} {item.variants.length > 1 && `(${item.variants.find(v => v.id === item.variantId)?.title})`}</div>
                   <div>€{Number(item.variants[0]?.price.amount).toFixed(2)}</div>
                   <div className="flex gap-2">
-                    <button className="text-xs" onClick={() => updateQuantity(item.variantId, item.quantity - 1)}>-</button>
+                    <button className="text-xs md:text-sm" onClick={() => updateQuantity(item.variantId, item.quantity - 1)}>-</button>
                     <div>{item.quantity}</div>
-                    <button className="text-xs" onClick={() => updateQuantity(item.variantId, item.quantity + 1)}>+</button>
+                    <button className="text-xs md:text-sm" onClick={() => updateQuantity(item.variantId, item.quantity + 1)}>+</button>
                   </div>
                 </div>
                 <div className="flex gap-4">
@@ -82,15 +82,15 @@ export default function Cart({ setCartOpen }: { setCartOpen: any }) {
         {/* Summary */}
         {items.length > 0 && <div className="relative">
           <div className="font-medium my-4">
-            <div className="flex justify-between items-center text-sm">
+            <div className="flex justify-between items-center text-sm md:text-base">
               <div>SUBTOTAL</div>
               <div>€{items.reduce((acc: any, item: any) => acc + item.variants.find((v: any) => v.id === item.variantId)?.price.amount * item.quantity, 0)}</div>
             </div>
-            <p className="text-xs">VAT and shipping are calculated at checkout.</p>
+            <p className="text-xs md:text-sm">VAT and shipping are calculated at checkout.</p>
           </div>
           <div className="">
             <button 
-              className="relative w-full serif font-bold text-2xl group overflow-hidden border-y border-black text-center p-2" 
+              className="relative w-full serif font-bold text-2xl md:text-3xl group overflow-hidden border-y border-black text-center p-2" 
               onClick={handleCheckout} 
               disabled={loadingCheckout}
             >

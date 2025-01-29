@@ -58,7 +58,7 @@ export default function ProductPage({ product, general }: ProductPageProps) {
       <div className="page" style={{ height: "100dvh"}}>
         <div className="absolute left-0 bottom-0 w-full h-1/2 md:h-auto md:min-h-screen md:relative p-2 md:px-0 md:py-24 overflow-y-scroll md:flex md:items-center">
           <div 
-            className="font-medium p-4 md:p-0"
+            className="text-xs md:text-base font-medium p-2 md:p-0"
             dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
           />
         </div>
@@ -85,14 +85,20 @@ export default function ProductPage({ product, general }: ProductPageProps) {
           ))}
         </div>
         <div className="md:h-full flex flex-col justify-center md:gap-4 fixed md:relative bottom-0 left-0 w-full md:w-auto border-t border-black md:border-t-0 bg-white md:bg-transparent">
-          <div className="text-2xl md:text-4xl font-medium w-full p-4 md:p-0">
+          <div className="text-xl md:text-4xl font-medium w-full p-4 md:p-0">
             <div>{product.title}</div>
             <div>€{Number(product.variants[0]?.price.amount).toFixed(2)}</div>
           </div>
           {product.variants.length > 1 && (
-            <div className="w-full flex justify-between serif text-xl md:text-[28px] font-bold mb-2 md:mb-0 md:mt-4 px-4 md:p-0">
+            <div className="w-[calc(100%+32px)] flex justify-between serif text-xl md:text-[28px] font-bold -ml-4 mb-2 md:-mb-4 md:mt-0 px-4 md:p-0">
               {product.variants.map((variant: any) => (
-                <button key={variant.id} onClick={() => handleVariant(variant)} className={`${selectedVariant.id === variant.id ? 'underline' : ''}`}>{variant.title}</button>
+                <button 
+                  key={variant.id} 
+                  onClick={() => handleVariant(variant)} 
+                  className={`p-4 ${selectedVariant.id === variant.id ? 'underline' : ''}`}
+                >
+                  {variant.title}
+                </button>
               ))}
             </div>
           )}

@@ -138,7 +138,7 @@ export default function Menu({ visible, menuItems }: { visible: boolean, menuIte
     <div className={`menu ${visible ? "" : "hide"}`} onMouseMove={handleMouseMove}>
       <Tint />
 
-      <div ref={menuRef} className="relative z-10 flex flex-col md:flex-row w-full h-3/4 items-center justify-around text-xl md:text-3xl">
+      <div ref={menuRef} className="relative z-10 flex flex-col md:flex-row w-full h-3/4 items-center justify-around text-xl md:text-3xl font-medium">
         <div onMouseEnter={() => handleHover("shop")} onMouseLeave={() => setBackground("transparent")}>
           <Link href="/shop">{t.menu.shop}</Link>
         </div>
@@ -170,8 +170,8 @@ export default function Menu({ visible, menuItems }: { visible: boolean, menuIte
       </div>
 
       <div className="absolute bottom-0 left-0 w-full h-full md:h-auto p-4 pt-20 flex flex-col md:flex-row justify-between items-end text-[8px] md:text-xs font-medium">
-        <div className="flex md:hidden xl:flex gap-8 justify-between md:justify-start uppercase w-full md:w-auto">
-          <div className="grid grid-cols-[auto_auto] gap-4 whitespace-nowrap">
+        <div className="flex md:hidden xl:flex gap-8 justify-between md:justify-start uppercase w-full md:w-auto leading-tight md:leading-normal">
+          <div className="grid grid-cols-[auto_auto] gap-4  whitespace-nowrap">
             <div>
               <div>Date</div>
               <div>Local Time at Origin</div>
@@ -196,20 +196,20 @@ export default function Menu({ visible, menuItems }: { visible: boolean, menuIte
             </div>
           </div>
         </div>
-        <div className="pointer-events-auto flex gap-8 w-full md:w-auto pb-8 md:pb-0">
+        <div className="pointer-events-auto flex gap-8 w-full md:w-auto pb-8 md:pb-0 leading-tight md:leading-normal">
           <div className="max-w-[110px] md:max-w-[960px]">
             <div>DISTRIBUTION</div>
             <div>KD PRESSE</div>
-            <div>contact@kdpresse.com</div>
+            <div><a href="mailto:contact@kdpresse.com">contact@kdpresse.com</a></div>
             <div>101 rue du Faubourg Saint Denis 75010, Paris FR</div>
           </div>
           <div className="max-w-[110px] md:max-w-[960px]">
             <div>AIR AFRIQUE</div>
             <div>Bienvenue à Bord SAS</div>
-            <div>contact@air-afrique.com</div>
+            <div><a href="mailto:contact@air-afrique.com">contact@air-afrique.com</a></div>
             <div>9 rue des colonnes 75002, Paris FR</div>
           </div>
-          <div className="uppercase w-full md:w-auto absolute md:relative bottom-0 left-0 flex flex-row md:flex-col gap-2 p-4 md:p-0 md:gap-0 justify-between md:justify-start whitespace-nowrap">
+          <div className="uppercase w-full md:w-auto absolute md:relative bottom-0 left-0 flex flex-row flex-wrap md:flex-col gap-1 p-4 md:p-0 md:gap-0 justify-between md:justify-start whitespace-nowrap">
             <div>
               <a href="https://www.instagram.com/airafrique_" target="_blank" rel="noopener noreferrer">Instagram</a>
             </div>

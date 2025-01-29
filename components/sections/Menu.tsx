@@ -42,7 +42,7 @@ export default function MenuSection({ menuItems }: { menuItems: any }) {
       className="menu-section transition-colors duration-300"
       onMouseMove={handleMouseMove}
     >
-      <div className="absolute z-10 bottom-0 md:bottom-auto md:top-0 right-0 p-4 md:p-6 text-xl md:text-3xl pointer-events-auto">
+      <div className="absolute z-10 bottom-0 md:bottom-auto md:top-0 right-0 p-4 md:p-6 text-xl md:text-3xl font-medium pointer-events-auto">
         <LanguageSwitcher />
       </div>
       {background !== "transparent" && 
@@ -59,7 +59,7 @@ export default function MenuSection({ menuItems }: { menuItems: any }) {
           }}
         />
       }
-      <div className="relative flex flex-col md:flex-row w-full h-3/4 items-center justify-around text-xl md:text-3xl font-medium md:font-normal">
+      <div className="relative flex flex-col md:flex-row w-full h-3/4 items-center justify-around text-xl md:text-3xl font-medium">
         <div onMouseEnter={() => handleHover("shop")} onMouseLeave={() => setBackground("transparent")}>
           <Link href="/shop" className="p-12">{t.menu.shop}</Link>
         </div>

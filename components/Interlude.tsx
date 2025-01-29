@@ -24,8 +24,7 @@ export default function Interlude({ visible, onComplete, content }: InterludePro
         
         setProgress(newProgress);
 
-        if (elapsed >= duration - completeOffset && elapsed < duration - completeOffset + 50) {
-          // Call onComplete when 500ms remaining
+        if (elapsed >= duration) {
           onComplete();
         }
 

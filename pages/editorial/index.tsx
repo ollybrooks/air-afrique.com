@@ -133,8 +133,8 @@ function Item({ article, index, handleItemClick }: { article: any, index: number
         className={`w-full h-full object-cover ${showDescription ? 'opacity-0' : 'opacity-100'}`}
       />}
       <div className={`md:absolute bottom-0 left-0 w-full h-full ${backgroundColour} p-8 ${showDescription || !article.heroImage ? 'opacity-100' : 'md:opacity-0'}`}>
-        <div className="border border-black w-full h-full p-12 flex flex-col justify-center items-start">
-          <div className="text-4xl font-medium uppercase title">{article.title}</div>
+        <div className="border border-black w-full h-full p-6 md:p-12 flex flex-col justify-center items-start">
+          <div className="text-2xl md:text-4xl font-medium uppercase title">{article.title}</div>
           <div className="text-sm futura uppercase">{article.credits}</div>
           <button className="text-sm uppercase font-medium mt-4 tracking-wider">Read More</button>
         </div>
