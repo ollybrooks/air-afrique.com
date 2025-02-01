@@ -81,7 +81,7 @@ export default function ArticlePage({ article, general }: Props) {
         height: "100dvh"
       }}>
         <div className="fixed left-0 bottom-0 w-full h-1/2 md:h-auto md:relative px-4 pt-8 pb-12 md:px-0 md:py-24 overflow-y-scroll" ref={textContainerRef}>
-          <h1 className="text-2xl md:text-3xl font-bold uppercase title">{article.title}</h1>
+          <h1 className="text-2xl leading-[1.2] md:text-3xl font-bold uppercase title">{article.title}</h1>
           <h2 className="text-xs uppercase my-4 futura whitespace-pre-wrap">{article.credits}</h2>
           <div className="font-medium text-sm leading-[17px] mt-8 text-justify">
             <PortableText value={article.content} />

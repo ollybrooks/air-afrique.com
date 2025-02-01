@@ -56,7 +56,7 @@ export default function ProductPage({ product, general }: ProductPageProps) {
   return(
     <Layout metadata={general} setCartOpen={isCartOpen}>
       <div className="page" style={{ height: "100dvh"}}>
-        <div className="absolute left-0 bottom-0 w-full h-1/2 md:h-auto md:min-h-screen md:relative p-2 md:px-0 md:py-24 overflow-y-scroll md:flex md:items-center">
+        <div className="absolute left-0 bottom-0 w-full h-[45%] md:h-auto md:min-h-screen md:relative p-2 md:px-0 md:py-24 overflow-y-scroll md:flex md:items-center">
           <div 
             className="text-xs md:text-base font-medium p-2 md:p-0"
             dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
@@ -64,12 +64,12 @@ export default function ProductPage({ product, general }: ProductPageProps) {
         </div>
         <div 
           // ref={imagesContainerRef} 
-          className="fixed top-0 left-0 w-full md:relative flex flex-col justify-center md:justify-normal items-center py-24 overflow-y-scroll h-1/2 md:h-auto border-b border-black md:border-b-0"
+          className="fixed top-0 left-0 w-full h-[55%] md:h-auto md:relative flex flex-col justify-end md:justify-normal items-center md:py-24 overflow-y-hidden md:overflow-y-scroll border-b border-black md:border-b-0"
         >
           {product.images.map((image: any, index: any) => (
             <div 
               key={index} 
-              className={`absolute md:relative w-full h-full md:h-auto flex flex-col items-end pt-20 md:pt-24 ${index === current ? 'opacity-100' : 'opacity-0 md:opacity-100'}`}
+              className={`absolute md:relative w-full h-auto flex flex-col items-end md:pt-24 ${index === current ? 'opacity-100' : 'opacity-0 md:opacity-100'}`}
               onClick={() => setCurrent(current === product.images.length - 1 ? 0 : current + 1)}
             >
               <Image 
@@ -78,7 +78,7 @@ export default function ProductPage({ product, general }: ProductPageProps) {
                 alt={product.title} 
                 width={1200} 
                 height={800} 
-                className="w-full h-full md:h-auto object-contain"
+                className="w-full h-full aspect-square object-contain"
                 priority={index === 0}
               />
             </div>

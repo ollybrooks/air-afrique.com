@@ -101,6 +101,10 @@ nav {
 
   &.hide {
     @apply opacity-0 pointer-events-none select-none;
+
+    * {
+      @apply pointer-events-none;
+    }
   }
 }
 
