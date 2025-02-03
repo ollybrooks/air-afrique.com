@@ -192,12 +192,18 @@ export const getStaticProps: GetStaticProps = async (context: any) => {
   const articles = await getArticles(locale)
   const article = articles.find((a: Article) => a.slug === params.slug)
 
-  if (!article) return { notFound: true }
+  if (!article) {
+    return { 
+      notFound: true,
+      revalidate: 1 // Revalidate frequently for deleted content
+    }
+  }
 
   return {
     props: {
       article,
       general
-    }
+    },
+    revalidate: 60 // Normal revalidation for existing content
   }
 }
