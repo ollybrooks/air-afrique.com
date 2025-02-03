@@ -33,7 +33,7 @@ export default function Shop({ products, general, museum }: { products: any[], g
 
   return(
     <Layout metadata={general}>
-      <div className={`shop ${showInterlude ? "hide" : ""}`}>
+      <div className={`shop`}>
         {products.map((item, index) => (
           <Link 
             key={index} 

@@ -123,16 +123,18 @@ nav {
 }
 
 .interlude {
-  @apply fixed top-0 left-0 z-40 h-screen w-full md:flex items-center justify-center bg-black bg-opacity-90 backdrop-blur-sm text-white transition-opacity duration-300;
+  height: 100vh;
+  height: 100dvh;
+  @apply fixed top-0 left-0 z-40 w-full md:flex items-center justify-center bg-black bg-opacity-90 backdrop-blur-sm text-white transition-opacity duration-300;
 
   > div {
-    height: 100vh;
-    height: 100dvh;
-    @apply w-full md:w-auto md:p-24;
+    /* height: 100vh; */
+    /* height: 100dvh; */
+    @apply h-full w-full md:w-auto md:p-24;
   }
   
   img {
-    @apply w-full h-full object-contain;
+    @apply w-full h-full object-contain md:object-cover;
   }
 
   &.hide {
