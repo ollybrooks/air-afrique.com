@@ -44,12 +44,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
     // Handle deletion specifically
     if (isDelete && jsonBody.documentId) {
-      // For deleted articles, we'll force a revalidation of the editorial pages
-      // which will trigger getStaticProps to return notFound: true
+      // Query Sanity for the deleted document's previous revision to get its slug
+      const deletedDoc = await sanityClient.fetch(
+        `*[_id == $id && _type == "article"][0]{slug}`,
+        { id: jsonBody.documentId }
+      )
+
       const deletedRoutes = [
         `/editorial`,
         `/en/editorial`,
       ]
+
+      // If we can find the slug of the deleted article, add its specific routes
+      if (deletedDoc?.slug?.current) {
+        deletedRoutes.push(
+          `/editorial/${deletedDoc.slug.current}`,
+          `/en/editorial/${deletedDoc.slug.current}`
+        )
+      }
       
       await Promise.all(
         deletedRoutes.map(async (route) => {
@@ -64,7 +76,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       return res.status(200).json({ 
         message: "Handled deletion", 
-        revalidated: deletedRoutes
+        revalidated: deletedRoutes,
+        deletedDoc: deletedDoc
       })
     }
     
