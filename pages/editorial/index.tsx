@@ -81,7 +81,7 @@ export default function Editorial({ articles, general, editorial, museum }: { ar
           </div>
         </div>
         <div className="index">
-          {articles.filter((article: any) => article._id !== editorial.heroArticle._ref).map((article: any, index: number) => (
+          {articles.filter((article: any) => article._id !== editorial.heroArticle._ref).sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((article: any, index: number) => (
             <Item 
               key={article.slug} 
               article={article} 

@@ -27,35 +27,62 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return
   }
 
-  const sanityClient = createClient({ 
-    projectId: "36cwc4ht",
-    dataset: "production",
-    apiVersion: "2023-07-10", 
-    useCdn: false 
-  })
+  try {
+    const sanityClient = createClient({ 
+      projectId: "36cwc4ht",
+      dataset: "production",
+      apiVersion: "2023-07-10", 
+      useCdn: false 
+    })
 
-  const jsonBody = JSON.parse(body)
-  const articles = await sanityClient.fetch(`*[_type == "article"]`)
-  const products = await client.product.fetchAll()
-  const routes = [
-    "/", 
-    "/about",
-    "/editorial",
-    "/shop",
-    "/privacy",
-    "/shipping",
-    "/terms",
-    ...articles.map((article: any) => `/editorial/${article.slug.current}`),
-    ...products.map((product: any) => `/shop/${product.handle}`)
-  ]
+    // Parse the webhook body to get the updated document
+    const jsonBody = JSON.parse(body)
+    
+    // Add a small delay to ensure Sanity has processed the change
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    
+    // Fetch latest data
+    const articles = await sanityClient.fetch(`*[_type == "article"]`)
+    const products = await client.product.fetchAll()
+    
+    const routes = [
+      "/", 
+      "/about",
+      "/editorial",
+      "/shop",
+      "/privacy",
+      "/shipping",
+      "/terms",
+      ...articles.map((article: any) => `/editorial/${article.slug.current}`),
+      ...products.map((product: any) => `/shop/${product.handle}`)
+    ]
 
-  // Create localized versions of all routes
-  // French (default locale) doesn't need prefix, only English routes need /en
-  const localizedRoutes = routes.flatMap(route => [
-    route,           // French version (default)
-    `/en${route}`    // English version
-  ])
+    // Create localized versions of all routes
+    const localizedRoutes = routes.flatMap(route => [
+      route,
+      `/en${route}`
+    ])
 
-  await Promise.all(localizedRoutes.map((route) => res.revalidate(route)))
-  res.status(200).json({ message: "Updated routes", revalidated: localizedRoutes })
+    await Promise.all(
+      localizedRoutes.map(async (route) => {
+        try {
+          await res.revalidate(route)
+        } catch (error) {
+          console.error(`Failed to revalidate ${route}:`, error)
+        }
+      })
+    )
+
+    res.status(200).json({ 
+      message: "Updated routes", 
+      revalidated: localizedRoutes,
+      articleCount: articles.length 
+    })
+  } catch (error) {
+    console.error('Revalidation error:', error)
+    return res.status(500).json({ 
+      message: "Error revalidating", 
+      error: error instanceof Error ? error.message : 'Unknown error' 
+    })
+  }
 }

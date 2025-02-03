@@ -72,6 +72,7 @@ export const getArticles = async (locale: string) => {
     groq`*[_type == "article"]{
       _updatedAt,
       _id,
+      date,
       "title": coalesce(title[$locale], title.fr),
       "description": coalesce(description[$locale], description.fr),
       "content": coalesce(content[$locale], content.fr),
