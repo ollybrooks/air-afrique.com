@@ -45,7 +45,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     "/privacy",
     "/shipping",
     "/terms",
-    ...articles.map((article: any) => `/editorial/${article.slug}`),
+    ...articles.map((article: any) => `/editorial/${article.slug.current}`),
     ...products.map((product: any) => `/shop/${product.handle}`)
   ]
 

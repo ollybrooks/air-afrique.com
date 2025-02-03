@@ -48,7 +48,7 @@ export default function Loader({ images }: { images: any }) {
         className={"fixed top-0 left-0 w-full flex flex-col justify-center items-center transition-transform duration-500"}
         style={{
           height: `${height}px`,
-          // transform: `translate(0, ${current >= 15 ? (window.innerWidth < 768 && window.innerHeight > 600) ? '-302px' : '-46.8vh' : '0'}) scale(${current >= 15 ? window.innerWidth < 768 ? '0.575' : '0.3925' : '1'})`,
+          // transform: `translate(0, ${current >= 15 ? (window.innerWidth < 768 && window.innerHeight > 600) ? '-302px' : '-402px' : '0'}) scale(${current >= 15 ? window.innerWidth < 768 ? '0.575' : '0.3925' : '1'})`,
         }}
       >
         <div className={`text-white title uppercase text-2xl md:text-6xl transition-opacity duration-300 ${current >= 10 ? 'opacity-0' : 'opacity-100'}`}>

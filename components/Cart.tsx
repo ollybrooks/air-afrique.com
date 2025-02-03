@@ -8,6 +8,7 @@ export default function Cart({ setCartOpen }: { setCartOpen: any }) {
   const { items, addItem, removeItem, totalPrice, totalItems, updateQuantity, clearCart } = useCart();
 
   const [loadingCheckout, setLoadingCheckout] = useState(false);
+  const [checkoutError, setCheckoutError] = useState(false);
 
   const handleCheckout = async () => {
     if (items.length === 0) {
@@ -31,13 +32,17 @@ export default function Cart({ setCartOpen }: { setCartOpen: any }) {
     });
 
     const data = await response.json();
-    // console.log(data);
+
+    if (data.error) {
+      setLoadingCheckout(false);
+      setCheckoutError(true);
+      return;
+    }
+
     window.location.href = data.checkoutUrl;
     // setLoadingCheckout(false);
     // clearCart();
   }
-
-  // console.log(items);
 
   return(
     <div className="cart" onClick={() => setCartOpen(false)}>
@@ -99,6 +104,7 @@ export default function Cart({ setCartOpen }: { setCartOpen: any }) {
               </span>
               <div className="absolute inset-0 bg-black w-full h-full -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-in-out" />
             </button>
+            {checkoutError && <div className="text-[var(--red)] text-center text-sm font-bold mt-2">Error Processing Checkout</div>}
           </div>
         </div>}
       </div>

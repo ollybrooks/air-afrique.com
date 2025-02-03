@@ -16,7 +16,10 @@ export default function ProductPage({ product, general }: ProductPageProps) {
 
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
-  const [selectedVariant, setSelectedVariant] = useState(product.variants[0]);
+  const [selectedVariant, setSelectedVariant] = useState(
+    // Select first available variant, or first variant if none available
+    product.variants.find((v: any) => v.available) || product.variants[0]
+  );
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   const handleVariant = (variant: any) => {
@@ -53,6 +56,9 @@ export default function ProductPage({ product, general }: ProductPageProps) {
     setIsCartOpen(true);
   };
 
+  const isOutOfStock = product.variants.every((v: any) => !v.available);
+  const isSelectedVariantAvailable = selectedVariant.available;
+
   return(
     <Layout metadata={general} setCartOpen={isCartOpen}>
       <div className="page" style={{ height: "100dvh"}}>
@@ -87,7 +93,7 @@ export default function ProductPage({ product, general }: ProductPageProps) {
         <div className="md:h-full flex flex-col justify-center md:gap-4 fixed md:relative bottom-0 left-0 w-full md:w-auto border-t border-black md:border-t-0 bg-white md:bg-transparent">
           <div className="text-xl md:text-4xl font-medium w-full p-4 md:p-0">
             <div>{product.title}</div>
-            <div>€{Number(product.variants[0]?.price.amount).toFixed(2)}</div>
+            <div>€{Number(selectedVariant.price.amount).toFixed(2)}</div>
           </div>
           {product.variants.length > 1 && (
             <div className="w-[calc(100%+32px)] flex justify-between serif text-xl md:text-[28px] font-bold -ml-4 mb-2 md:-mb-4 md:mt-0 px-4 md:p-0">
@@ -95,7 +101,10 @@ export default function ProductPage({ product, general }: ProductPageProps) {
                 <button 
                   key={variant.id} 
                   onClick={() => handleVariant(variant)} 
-                  className={`p-4 ${selectedVariant.id === variant.id ? 'underline' : ''}`}
+                  className={`p-4 ${selectedVariant.id === variant.id ? 'underline' : ''} ${
+                    !variant.available ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
+                  disabled={!variant.available}
                 >
                   {variant.title}
                 </button>
@@ -103,11 +112,14 @@ export default function ProductPage({ product, general }: ProductPageProps) {
             </div>
           )}
           <button 
-            className="serif w-full border-t md:border-y bg-white border-black py-2 text-2xl md:text-3xl font-bold relative group overflow-hidden" 
+            className={`serif w-full border-t md:border-y bg-white border-black py-2 text-2xl md:text-3xl font-bold relative group overflow-hidden ${
+              !isSelectedVariantAvailable ? 'opacity-50 cursor-not-allowed pointer-events-none' : ''
+            }`}
             onClick={handleAddToCart}
+            disabled={!isSelectedVariantAvailable}
           >
             <span className="relative z-10 group-hover:text-white transition-colors duration-500 ease-in-out">
-              {added ? "Added" : "Add To Cart"}
+              {added ? "Added" : isOutOfStock ? "Out of Stock" : "Add To Cart"}
             </span>
             <div className="absolute inset-0 bg-black w-full h-full -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-in-out" />
           </button>
