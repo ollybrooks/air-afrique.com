@@ -77,7 +77,7 @@ export default function ArticlePage({ article, general }: Props) {
   return (
     <Layout metadata={general}>
       <div className="page h-full" style={{
-        background: article.background === "green" ? "var(--green)" : "",
+        background: article.background === "green" ? "var(--green)" : article.background === "red" ? "var(--red)" : article.background === "yellow" ? "var(--yellow)" : "",
         height: "100dvh"
       }}>
         <div className="fixed left-0 bottom-0 w-full h-1/2 md:h-auto md:relative px-4 pt-8 pb-12 md:px-0 md:py-24 overflow-y-scroll" ref={textContainerRef}>
@@ -179,7 +179,7 @@ export const getStaticPaths: GetStaticPaths = async ({ locales = ['fr', 'en'] })
 
   return {
     paths,
-    fallback: false
+    fallback: "blocking"
   }
 }
 
