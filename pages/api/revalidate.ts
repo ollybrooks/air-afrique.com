@@ -37,11 +37,38 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Parse the webhook body to get the updated document
     const jsonBody = JSON.parse(body)
+    const isDelete = jsonBody.operation === 'delete'
     
     // Add a small delay to ensure Sanity has processed the change
     await new Promise(resolve => setTimeout(resolve, 1000))
     
-    // Fetch latest data
+    // Handle deletion specifically
+    if (isDelete && jsonBody.documentId) {
+      // For deleted articles, we'll force a revalidation of the editorial pages
+      // which will trigger getStaticProps to return notFound: true
+      const deletedRoutes = [
+        `/editorial`,
+        `/en/editorial`,
+      ]
+      
+      await Promise.all(
+        deletedRoutes.map(async (route) => {
+          try {
+            await res.revalidate(route)
+            console.log(`Revalidated ${route} after deletion`)
+          } catch (error) {
+            console.error(`Failed to revalidate ${route}:`, error)
+          }
+        })
+      )
+
+      return res.status(200).json({ 
+        message: "Handled deletion", 
+        revalidated: deletedRoutes
+      })
+    }
+    
+    // Handle updates and creations as before
     const articles = await sanityClient.fetch(`*[_type == "article"]`)
     const products = await client.product.fetchAll()
     
