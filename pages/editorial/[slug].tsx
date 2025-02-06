@@ -1,6 +1,6 @@
 import { GetStaticProps, GetStaticPaths } from 'next'
 import { getArticles, getGeneral } from '@/sanity/utils'
-import { PortableText } from '@portabletext/react'
+import { PortableText, PortableTextComponents } from '@portabletext/react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import Layout from '@/components/Layout'
@@ -74,6 +74,17 @@ export default function ArticlePage({ article, general }: Props) {
     return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
   }
 
+  const components: PortableTextComponents = {
+    block: ({ children, value = {} }) => {
+      // Check if children is an empty array or contains only whitespace
+      if (Array.isArray(children) && children.every(child => typeof child === 'string' && child.trim() === '')) {
+        return <br/>;
+      }
+  
+      return <p>{children}</p>;
+    },
+  }
+
   return (
     <Layout metadata={general}>
       <div className="page h-full" style={{
@@ -84,14 +95,14 @@ export default function ArticlePage({ article, general }: Props) {
           <h1 className="text-2xl leading-[1.2] md:text-3xl font-bold uppercase title">{article.title}</h1>
           <h2 className="text-xs uppercase my-4 futura whitespace-pre-wrap">{article.credits}</h2>
           <div className="font-medium text-sm leading-[17px] mt-8 text-justify">
-            <PortableText value={article.content} />
+            <PortableText value={article.content} components={components} />
           </div>
         </div>
         <div 
           ref={imagesContainerRef} 
           className="fixed top-0 left-0 w-full md:relative flex flex-col justify-center md:justify-normal items-center py-24 overflow-y-scroll h-1/2 md:h-auto border-b border-black md:border-b-0"
         >
-          {article.images.map((image, index) => (
+          {article.images?.map((image, index) => (
             <div 
               key={index} 
               className={`absolute md:relative w-full h-2/3 md:h-auto flex flex-col items-end pt-6 md:pt-24 ${index === current ? 'opacity-100' : 'opacity-0 md:opacity-100'}`}
@@ -100,24 +111,24 @@ export default function ArticlePage({ article, general }: Props) {
               <Image 
                 src={image.url}
                 alt={image.caption || article.title}
-                width={1200}
+                width={800}
                 height={800}
                 className="w-full h-full md:h-auto object-contain"
               />
               <div className="text-[10px] serif mt-2 hidden md:block">{index}</div>
             </div>
           ))}
-          <div className="absolute bottom-0 left-0 p-4 flex justify-between items-end w-full md:hidden">
+          {article.images && <div className="absolute bottom-0 left-0 p-4 flex justify-between items-end w-full md:hidden">
             <div className="text-[10px]  serif"><sup>{current}</sup> {article.images[current].caption}</div>
             <button className="text-[8px] leading-[13px] serif" onClick={() => setShowReferences(true)}>REFERENCES</button>
-          </div>
+          </div>}
           {/* <div className="fixed top-0 left-1/3 border border-pink-500 w-1/3 h-screen flex-col hidden md:flex">
             <button className="w-full h-1/2 bg-pink-200 bg-opacity-50" onClick={() => scrollToImage(current-1)}></button>
             <button className="w-full h-1/2 bg-sky-200 bg-opacity-50" onClick={() => scrollToImage(current+1)}></button>
           </div> */}
         </div>
         <div className="pt-48 serif flex-col gap-2 items-start hidden md:flex">
-          {article.images.map((image, index) => (
+          {article.images?.map((image, index) => (
             <button
               key={index} 
               className="relative cursor-pointer text-left"
