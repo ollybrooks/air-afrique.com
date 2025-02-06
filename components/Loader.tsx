@@ -4,6 +4,7 @@ import Image from "next/image";
 export default function Loader({ images }: { images: any }) {
 
   const [current, setCurrent] = useState(0);
+  const [currentImage, setCurrentImage] = useState(0)
   const total = 3000;
 
   useEffect(() => {
@@ -18,6 +19,22 @@ export default function Loader({ images }: { images: any }) {
     return () => clearInterval(interval);
   }, [current]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (current < total/100) {
+        if (currentImage < images.length - 1) {
+          setCurrentImage(currentImage + 1);
+        } else {
+          setCurrentImage(0);
+        }
+      } else {
+        clearInterval(interval)
+      }
+    }, 100);
+    
+    return () => clearInterval(interval);
+  }, [currentImage, images.length]);
+
   const [height, setHeight] = useState(0);
 
   useEffect(() => {
@@ -28,11 +45,11 @@ export default function Loader({ images }: { images: any }) {
 
   return (
     <div className={`loader transition-opacity duration-500 bg-white ${current >= 20 ? 'opacity-0 pointer-events-none select-none' : 'opacity-100'}`}>
-      <div className={`w-full h-full relative transition-opacity duration-500 ${current >= 15 ? 'opacity-0' : 'opacity-100'}`}>
+      <div className={`w-full h-full relative transition-opacity duration-500 ${current >= 12 ? 'opacity-0' : 'opacity-100'}`}>
         {images.map((image: any, index: number) => (
           <div 
             key={index} 
-            className={`absolute w-full h-full top-0 left-0 flex items-center justify-center ${current === index ? 'opacity-100' : 'opacity-0'}`}
+            className={`absolute w-full h-full top-0 left-0 flex items-center justify-center ${currentImage === index ? 'opacity-100' : 'opacity-0'}`}
           >
             <Image 
               src={image.url} 
