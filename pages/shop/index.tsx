@@ -31,10 +31,12 @@ export default function Shop({ products, general, museum }: { products: any[], g
     setMuseumContent(museum[randomIndex]);
   }, [museum]);
 
+  console.log(products);
+
   return(
     <Layout metadata={general}>
       <div className={`shop`}>
-        {products.map((item, index) => (
+        {products.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()).map((item, index) => (
           <Link 
             key={index} 
             href={`/shop/${item.handle}`} 
