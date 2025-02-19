@@ -75,7 +75,7 @@ export default function ProductPage({ product, general }: ProductPageProps) {
           {product.images.map((image: any, index: any) => (
             <div 
               key={index} 
-              className={`absolute md:relative w-full h-auto flex flex-col items-end md:pt-0 ${index === current ? 'opacity-100' : 'opacity-0 md:opacity-100'}`}
+              className={`absolute md:relative w-full h-full p-4 pt-20 md:p-0 flex flex-col items-end md:pt-0 ${index === current ? 'opacity-100' : 'opacity-0 md:opacity-100'}`}
               onClick={() => setCurrent(current === product.images.length - 1 ? 0 : current + 1)}
             >
               <Image 
