@@ -41,7 +41,8 @@ export default function Cart({ setCartOpen }: { setCartOpen: any }) {
 
     window.location.href = data.checkoutUrl;
     // setLoadingCheckout(false);
-    // clearCart();
+    setCartOpen(false);
+    clearCart();
   }
 
   return(

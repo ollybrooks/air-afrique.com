@@ -93,12 +93,9 @@ export default function Menu({ visible, menuItems }: { visible: boolean, menuIte
   const handleMouseMove = (e: React.MouseEvent) => {
     if (menuRef.current) {
       const rect = menuRef.current.getBoundingClientRect();
-      const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      
       setCursorPosition({
-        x: e.clientX - rect.left - scrollLeft,
-        y: e.clientY - rect.top - scrollTop
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
       });
     }
   };
@@ -170,7 +167,7 @@ export default function Menu({ visible, menuItems }: { visible: boolean, menuIte
       </div>
 
       <div className="absolute bottom-0 left-0 w-full h-full md:h-auto p-4 pt-20 flex flex-col md:flex-row justify-between items-end text-[8px] md:text-xs font-medium">
-        <div className="flex md:hidden xl:flex gap-8 justify-between md:justify-start uppercase w-full md:w-auto leading-tight md:leading-normal">
+        <div className="flex md:hidden xl:flex gap-8 justify-between md:justify-start uppercase w-full md:w-auto leading-tight md:leading-[1.4]">
           <div className="grid grid-cols-[auto_auto] gap-4  whitespace-nowrap">
             <div>
               <div>Date</div>
@@ -196,7 +193,7 @@ export default function Menu({ visible, menuItems }: { visible: boolean, menuIte
             </div>
           </div>
         </div>
-        <div className="pointer-events-auto flex gap-8 w-full md:w-auto pb-8 md:pb-0 leading-tight md:leading-normal">
+        <div className="pointer-events-auto flex gap-8 w-full md:w-auto pb-8 md:pb-0 leading-tight md:leading-[1.4]">
           <div className="max-w-[110px] md:max-w-[960px]">
             <div>DISTRIBUTION</div>
             <div>KD PRESSE</div>
@@ -209,7 +206,7 @@ export default function Menu({ visible, menuItems }: { visible: boolean, menuIte
             <div><a href="mailto:contact@air-afrique.com">contact@air-afrique.com</a></div>
             <div>9 rue des colonnes 75002, Paris FR</div>
           </div>
-          <div className="uppercase w-full md:w-auto absolute md:relative bottom-0 left-0 flex flex-row flex-wrap md:flex-col gap-1 p-4 md:p-0 md:gap-0 justify-between md:justify-start whitespace-nowrap">
+          <div className="uppercase w-full md:w-auto absolute md:relative bottom-0 left-0 leading-[1] flex flex-row flex-wrap md:flex-col gap-1 p-4 md:p-0 md:gap-0 justify-between md:justify-start whitespace-nowrap">
             <div>
               <a href="https://www.instagram.com/airafrique_" target="_blank" rel="noopener noreferrer">Instagram</a>
             </div>

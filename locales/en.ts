@@ -5,6 +5,9 @@ export default {
     about: "About",
     shipping: "Shipping and Returns",
     terms: "Terms and Conditions",
-    privacy: "Privacy Policy"
+    privacy: "Privacy Policy",
+    menu: "Menu",
+    cart: "Cart",
+    close: "Close"
   }
 }

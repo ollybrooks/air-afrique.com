@@ -31,7 +31,7 @@ export default function Shop({ products, general, museum }: { products: any[], g
     setMuseumContent(museum[randomIndex]);
   }, [museum]);
 
-  console.log(products);
+  // console.log(products);
 
   return(
     <Layout metadata={general}>

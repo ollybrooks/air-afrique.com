@@ -91,16 +91,16 @@ export default function ArticlePage({ article, general }: Props) {
         background: article.background === "green" ? "var(--green)" : article.background === "red" ? "var(--red)" : article.background === "yellow" ? "var(--yellow)" : "",
         height: "100dvh"
       }}>
-        <div className="fixed left-0 bottom-0 w-full h-1/2 md:h-auto md:relative px-4 pt-8 pb-12 md:px-0 md:py-24 overflow-y-scroll" ref={textContainerRef}>
+        <div className="fixed left-0 bottom-0 w-full h-1/2 md:h-auto md:relative px-4 pt-8 pb-24 md:px-0 md:py-24 md:pb-48 overflow-y-scroll" ref={textContainerRef}>
           <h1 className="text-2xl leading-[1.2] md:text-3xl font-bold uppercase title">{article.title}</h1>
-          <h2 className="text-xs uppercase my-4 futura whitespace-pre-wrap">{article.credits}</h2>
-          <div className="font-medium text-sm leading-[17px] mt-8 text-justify">
+          <h2 className="text-base uppercase my-4 futura whitespace-pre-wrap">{article.credits}</h2>
+          <div className="font-medium text-base leading-[19px] mt-8 text-justify">
             <PortableText value={article.content} components={components} />
           </div>
         </div>
         <div 
           ref={imagesContainerRef} 
-          className="fixed top-0 left-0 w-full md:relative flex flex-col justify-center md:justify-normal items-center py-24 overflow-y-scroll h-1/2 md:h-auto border-b border-black md:border-b-0"
+          className="fixed top-0 left-0 w-full md:relative flex flex-col justify-center md:justify-normal items-center py-24 md:pb-[60vh] overflow-y-scroll h-1/2 md:h-auto border-b border-black md:border-b-0"
         >
           {article.images?.map((image, index) => (
             <div 

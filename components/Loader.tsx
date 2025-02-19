@@ -5,7 +5,7 @@ export default function Loader({ images }: { images: any }) {
 
   const [current, setCurrent] = useState(0);
   const [currentImage, setCurrentImage] = useState(0)
-  const total = 3000;
+  const total = 2500;
 
   useEffect(() => {
     const interval = setInterval(() => {

@@ -3,10 +3,15 @@ import { useState, useEffect } from "react";
 import Menu from "./Menu";
 import Cart from "./Cart";
 import { useRouter } from "next/router";
+import en from "@/locales/en";
+import fr from "@/locales/fr";
 
 export default function Nav({ cartControl, menuItems }: { cartControl?: boolean, menuItems?: any }) {
 
   const router = useRouter();
+  const { locale = "fr" } = router || {};
+
+  const t = locale === 'en' ? en : fr;
 
   const [menu, setMenu] = useState(false);
   const [cart, setCart] = useState(false);
@@ -35,7 +40,7 @@ export default function Nav({ cartControl, menuItems }: { cartControl?: boolean,
             disabled={router.pathname === "/"}
             className="disabled:hidden"
           >
-            {!menu ? "Menu" : "(Close)"}
+            {!menu ? t.menu.menu : `(${t.menu.close})`}
           </button>
         </div>
         <div className="-mt-1">
@@ -58,7 +63,7 @@ export default function Nav({ cartControl, menuItems }: { cartControl?: boolean,
         </div>
         <div className="w-12 md:w-24 text-right md:text-left flex justify-end md:block">
           <button onClick={() => toggleCart(!cart)}>
-            {!cart ? "Cart" : "(Close)"}
+            {!cart ? t.menu.cart : `(${t.menu.close})`}
           </button>
         </div>
       </nav>

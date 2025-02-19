@@ -64,18 +64,18 @@ export default function ProductPage({ product, general }: ProductPageProps) {
       <div className="page" style={{ height: "100dvh"}}>
         <div className="absolute left-0 bottom-0 w-full h-[45%] md:h-auto md:min-h-screen md:relative p-2 md:px-0 md:py-24 overflow-y-scroll md:flex md:items-center">
           <div 
-            className="text-xs md:text-base font-medium p-2 md:p-0"
+            className="text-sm md:text-base font-medium p-2 md:p-0"
             dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
           />
         </div>
         <div 
           // ref={imagesContainerRef} 
-          className="fixed top-0 left-0 w-full h-[55%] md:h-auto md:relative flex flex-col justify-end md:justify-normal items-center md:py-24 overflow-y-hidden md:overflow-y-scroll border-b border-black md:border-b-0"
+          className="fixed top-0 left-0 w-full h-[55%] md:h-auto md:relative flex flex-col justify-end md:justify-center items-center md:py-24 overflow-y-hidden md:overflow-y-scroll border-b border-black md:border-b-0"
         >
           {product.images.map((image: any, index: any) => (
             <div 
               key={index} 
-              className={`absolute md:relative w-full h-auto flex flex-col items-end md:pt-24 ${index === current ? 'opacity-100' : 'opacity-0 md:opacity-100'}`}
+              className={`absolute md:relative w-full h-auto flex flex-col items-end md:pt-0 ${index === current ? 'opacity-100' : 'opacity-0 md:opacity-100'}`}
               onClick={() => setCurrent(current === product.images.length - 1 ? 0 : current + 1)}
             >
               <Image 
@@ -91,7 +91,7 @@ export default function ProductPage({ product, general }: ProductPageProps) {
           ))}
         </div>
         <div className="md:h-full flex flex-col justify-center md:gap-4 fixed md:relative bottom-0 left-0 w-full md:w-auto border-t border-black md:border-t-0 bg-white md:bg-transparent">
-          <div className="text-xl md:text-4xl font-medium w-full p-4 md:p-0">
+          <div className="text-xl md:text-4xl font-medium w-full px-4 py-2 md:p-0">
             <div>{product.title}</div>
             <div>€{Number(selectedVariant.price.amount).toFixed(2)}</div>
           </div>
