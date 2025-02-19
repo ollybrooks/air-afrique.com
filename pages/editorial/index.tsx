@@ -14,7 +14,6 @@ export default function Editorial({ articles, general, editorial, museum }: { ar
   const [museumContent, setMuseumContent] = useState<any>(null);
 
   const handleInterludeComplete = () => {
-    // setShowInterlude(false);
     if (pendingRoute) {
       router.push(pendingRoute);
     }
