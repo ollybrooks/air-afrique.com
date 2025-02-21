@@ -70,7 +70,7 @@ export default function ProductPage({ product, general }: ProductPageProps) {
         </div>
         <div 
           // ref={imagesContainerRef} 
-          className="fixed top-0 left-0 w-full h-[55%] md:h-auto md:relative flex flex-col justify-end md:justify-center items-center md:py-24 overflow-y-hidden md:overflow-y-scroll border-b border-black md:border-b-0"
+          className="fixed top-0 left-0 w-full h-[55%] md:h-auto md:relative flex flex-col justify-end md:justify-center items-center md:py-24 overflow-y-hidden md:overflow-y-scroll bg-white border-b border-black md:border-b-0"
         >
           {product.images.map((image: any, index: any) => (
             <div 
