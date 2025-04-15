@@ -37,7 +37,7 @@ export default function Editorial({ articles, general, editorial, museum }: { ar
       <div className="editorial">
         <div className="hero">
           <div>
-            {hero.issue && <div className="mb-4 futura uppercase bg-black text-white inline-block">Issue {('0' + hero.issue).slice(-2)}</div>}
+            {hero.issue && <div className="mb-4 futura uppercase bg-black text-white inline-block mx-4 md:mx-0">Issue {('0' + hero.issue).slice(-2)}</div>}
             <Link 
               href={`/editorial/${hero.slug}`}
               onClick={(e) => handleItemClick(e, hero.slug)}

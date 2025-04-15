@@ -7,7 +7,7 @@ export default function YoutubeEmbed() {
   const ref = useRef<HTMLDivElement>(null)
   const [player, setPlayer] = useState<any | null>(null);
   const [showOverlay, setShowOverlay] = useState(true);
-  const [length, setLength] = useState(56) // seconds
+  const [length, setLength] = useState(54) // seconds
   const [muted, setMuted] = useState(true)
 
   useEffect(() => {
@@ -64,14 +64,14 @@ export default function YoutubeEmbed() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setShowOverlay(false)
-    }, 1000)
+    }, 2500)
     return () => clearTimeout(timeout)
   }, [])
 
   useEffect(() => {
     const overlayTimeout = setTimeout(() => {
       setShowOverlay(true)
-    }, (length - 3) * 1000)
+    }, (length - 1.5) * 1000)
 
     const routeTimeout = setTimeout(() => {
       router.push('/home')
@@ -83,7 +83,8 @@ export default function YoutubeEmbed() {
     }
   }, [length])
 
-  function handleMute() {
+  function handleMute(e: React.MouseEvent) {
+    e.stopPropagation()
     if (player) {
       // console.log(player)
       player.unMute();
@@ -91,17 +92,21 @@ export default function YoutubeEmbed() {
     }
   }
 
+  function handleClick() {
+    router.push('/home')
+  }
+
   return (
-    <div className="fixed inset-0 w-full h-full flex items-center justify-center overflow-hidden pointer-events-none select-none">
+    <div className="fixed inset-0 w-full h-full flex items-center justify-center overflow-hidden bg-black" onClick={handleClick}>
       <div 
-        className="absolute top-0 left-0 z-10 w-full h-full bg-white transition-opacity duration-1000"
+        className="absolute top-0 left-0 z-10 w-full h-full bg-white transition-opacity duration-1000 pointer-events-none"
         style={{
           opacity: showOverlay ? 1 : 0
         }}
       />
       <div 
         ref={ref} 
-        className="absolute w-[1920px] h-[1080px]" 
+        className="absolute w-[1920px] h-[1080px] pointer-events-none select-none" 
         // style={{
         //   height: "100vh",
         //   width: "calc((100vh*16)/9)",
