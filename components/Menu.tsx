@@ -76,7 +76,12 @@ export default function Menu({ visible, menuItems }: { visible: boolean, menuIte
       try {
         const response = await fetch('/api/product-count');
         const data = await response.json();
-        setProductCount(data.count.toString().padStart(3, '0'));
+        // console.log(data);
+        if (data.count) {
+          setProductCount(data.count.toString().padStart(3, '0'));
+        } else {
+          setProductCount('000');
+        }
       } catch (error) {
         console.error('Error fetching product count:', error);
         setProductCount('000');

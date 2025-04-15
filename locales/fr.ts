@@ -9,5 +9,8 @@ export default {
     menu: "Menu",
     cart: "Panier",
     close: "Fermer"
+  },
+  about: {
+    readMore: "Lisez plus"
   }
 }

@@ -9,5 +9,8 @@ export default {
     menu: "Menu",
     cart: "Cart",
     close: "Close"
+  },
+  about: {
+    readMore: "Read more"
   }
 }

@@ -37,6 +37,7 @@ export default function Editorial({ articles, general, editorial, museum }: { ar
       <div className="editorial">
         <div className="hero">
           <div>
+            {hero.issue && <div className="mb-4 futura uppercase bg-black text-white inline-block">Issue {('0' + hero.issue).slice(-2)}</div>}
             <Link 
               href={`/editorial/${hero.slug}`}
               onClick={(e) => handleItemClick(e, hero.slug)}
@@ -116,7 +117,14 @@ function Item({ article, index, handleItemClick }: { article: any, index: number
     'bg-[var(--red)]',
   ])
 
+  const [textColours] = useState([
+    'text-[var(--green)]',
+    'text-[var(--yellow)]',
+    'text-[var(--red)]',
+  ])
+
   const backgroundColour = colours[index % colours.length];
+  const textColour = textColours[index % textColours.length];
 
   return(
     <Link 
@@ -133,6 +141,7 @@ function Item({ article, index, handleItemClick }: { article: any, index: number
       />}
       <div className={`md:absolute bottom-0 left-0 w-full h-full ${backgroundColour} p-8 ${showDescription || !article.heroImage ? 'opacity-100' : 'md:opacity-0'}`}>
         <div className="border border-black w-full h-full p-6 md:p-12 flex flex-col justify-center items-start">
+          {article.issue && <div className={`mb-4 futura uppercase bg-black ${textColour}`}>Issue {('0' + article.issue).slice(-2)}</div>}
           <div className="text-2xl md:text-4xl font-medium uppercase title">{article.title}</div>
           <div className="text-sm futura uppercase">{article.credits}</div>
           <button className="text-sm uppercase font-medium mt-4 tracking-wider">Read More</button>

@@ -44,6 +44,7 @@ export const getAbout = async (locale: string) => {
       _id,
       title,
       "content": coalesce(content[$locale], content.fr),
+      "readMore": coalesce(readMore[$locale], readMore.fr),
       team,
       "images": images[]{
         "url": asset->url,
@@ -86,7 +87,8 @@ export const getArticles = async (locale: string) => {
       "summary": coalesce(summary[$locale], summary.fr),
       background,
       type,
-      hero
+      hero,
+      issue
     }`,
     { locale }
   )

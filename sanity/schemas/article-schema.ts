@@ -32,6 +32,11 @@ const article = {
       initialValue: 'text'
     },
     {
+      name: 'issue',
+      title: 'Issue',
+      type: 'number',
+    },
+    {
       name: 'date',
       title: 'Published Date',
       type: 'date',

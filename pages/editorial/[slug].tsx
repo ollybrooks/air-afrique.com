@@ -18,6 +18,7 @@ interface Article {
   credits: string
   background: string
   type: string
+  issue: number
 }
 
 interface Props {
@@ -92,6 +93,9 @@ export default function ArticlePage({ article, general }: Props) {
         height: "100dvh"
       }}>
         <div className="fixed left-0 bottom-0 w-full h-1/2 md:h-auto md:relative px-4 pt-8 pb-24 md:px-0 md:py-24 md:pb-48 overflow-y-scroll" ref={textContainerRef}>
+          {article.issue && <div className="mb-4 futura uppercase bg-black inline-block" style={{
+            color: article.background === "green" ? "var(--green)" : article.background === "red" ? "var(--red)" : article.background === "yellow" ? "var(--yellow)" : ""
+          }}>Issue {('0' + article.issue).slice(-2)}</div>}
           <h1 className="text-2xl leading-[1.2] md:text-3xl font-bold uppercase title">{article.title}</h1>
           <h2 className="text-base uppercase my-4 futura whitespace-pre-wrap">{article.credits}</h2>
           <div className="font-medium text-base leading-[19px] mt-8 text-justify">

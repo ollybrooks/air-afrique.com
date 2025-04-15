@@ -3,11 +3,20 @@ import { getAbout, getGeneral } from "@/sanity/utils";
 import { PortableText } from "@portabletext/react";
 import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import fr from "../../locales/fr";
+import en from "../../locales/en";
 
 export default function About({ data, general }: { data: any, general: any }) {
 
+  const router = useRouter();
+  const { locale = "fr" } = router || {};
+
+  const t = locale === 'en' ? en : fr;
+
   const [colour, setColour] = useState("var(--red)");
   const [images, setImages] = useState<{ x: number, y: number }[]>([]);
+  const [readMore, setReadMore] = useState(false);
 
   const [colours] = useState([
     "var(--red)",
@@ -82,29 +91,42 @@ export default function About({ data, general }: { data: any, general: any }) {
             />
           ))}
         </div>
-        <div className="relative text-center text-xl md:text-4xl font-medium tracking-[-0.01em] select-none max-w-5xl mx-auto mt-32 md:mt-48 px-4 md:px-0">
+        <div className="relative text-center text-xl md:text-4xl font-medium tracking-[-0.01em] select-none max-w-5xl mx-auto mt-[30vh] px-4 md:px-0">
           <PortableText value={data.content} />
         </div>
-        <div className="relative flex flex-col gap-4 md:gap-8 my-36 text-center items-center select-none">
-          <div className="text-xl md:text-4xl font-medium uppercase tracking-[-0.01em]">
-            Team
-          </div>
-          {data.team.map((item: any) => (
-            item.link ? (
-              <a href={item.link} key={item.name}>
-                <div>
-                  <p className="uppercase text-xs md:text-xl">{item.title}</p>
-                  <p className="font-medium text-base md:text-3xl tracking-[-0.01em]">{item.name}</p>
-                </div>
-              </a>
-            ) : (
-              <div key={item.name}>
-                <p className="uppercase text-xs md:text-xl">{item.title}</p>
-                <p className="font-medium text-base md:text-3xl tracking-[-0.01em]">{item.name}</p>
+        {!readMore && <button onClick={(e) => {
+          e.stopPropagation();
+          setReadMore(true);
+        }} className="mx-auto block mt-4 md:text-lg font-medium">
+          {t.about.readMore}
+        </button>}
+        {readMore && (
+          <>
+            <div className="relative text-center text-xl md:text-4xl font-medium tracking-[-0.01em] select-none max-w-5xl mx-auto mt-8 md:mt-12 px-4 md:px-0">
+              <PortableText value={data.readMore} />
+            </div>
+            <div className="relative flex flex-col gap-4 md:gap-8 my-36 text-center items-center select-none">
+              <div className="text-xl md:text-4xl font-medium uppercase tracking-[-0.01em]">
+                Team
               </div>
-            )
-          ))}
-        </div>
+              {data.team.map((item: any) => (
+                item.link ? (
+                  <a href={item.link} key={item.name}>
+                    <div>
+                      <p className="uppercase text-xs md:text-xl">{item.title}</p>
+                      <p className="font-medium text-base md:text-3xl tracking-[-0.01em]">{item.name}</p>
+                    </div>
+                  </a>
+                ) : (
+                  <div key={item.name}>
+                    <p className="uppercase text-xs md:text-xl">{item.title}</p>
+                    <p className="font-medium text-base md:text-3xl tracking-[-0.01em]">{item.name}</p>
+                  </div>
+                )
+              ))}
+            </div>
+          </>
+        )}
         
       </div>
     </Layout>

@@ -16,6 +16,11 @@ const about = {
       type: "localeBlock"
     },
     {
+      name: "readMore",
+      title: "Read More",
+      type: "localeBlock"
+    },
+    {
       name: "team",
       title: "Team", 
       type: "array",
