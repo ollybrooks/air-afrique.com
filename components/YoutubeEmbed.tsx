@@ -7,14 +7,14 @@ export default function YoutubeEmbed() {
   const ref = useRef<HTMLDivElement>(null)
   const [player, setPlayer] = useState<any | null>(null);
   const [showOverlay, setShowOverlay] = useState(true);
-  const [length, setLength] = useState(60) // seconds
+  const [length, setLength] = useState(56) // seconds
   const [muted, setMuted] = useState(true)
 
   useEffect(() => {
     if (ref.current) {
       // Function to initialize the YouTube player
       const initializeYouTubePlayer = () => {
-        const videoId = "0h_cqTCT5g0";
+        const videoId = "xdLfDAKvPic";
 
         // Check if the YouTube Iframe API is available
         if (window.YT && typeof window.YT.Player === 'function') {
@@ -64,42 +64,51 @@ export default function YoutubeEmbed() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setShowOverlay(false)
-    }, 3500)
+    }, 1000)
     return () => clearTimeout(timeout)
   }, [])
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
+    const overlayTimeout = setTimeout(() => {
+      setShowOverlay(true)
+    }, (length - 3) * 1000)
+
+    const routeTimeout = setTimeout(() => {
       router.push('/home')
     }, length * 1000)
-    return () => clearTimeout(timeout)
+
+    return () => {
+      clearTimeout(overlayTimeout)
+      clearTimeout(routeTimeout)
+    }
   }, [length])
 
   function handleMute() {
     if (player) {
-      console.log(player)
+      // console.log(player)
       player.unMute();
       setMuted(false)
     }
   }
 
   return (
-    <div className="fixed inset-0 w-full h-full pointer-events-none select-none">
+    <div className="fixed inset-0 w-full h-full flex items-center justify-center overflow-hidden pointer-events-none select-none">
       <div 
-        className="absolute top-0 left-0 w-full h-full bg-white transition-opacity duration-1000"
+        className="absolute top-0 left-0 z-10 w-full h-full bg-white transition-opacity duration-1000"
         style={{
           opacity: showOverlay ? 1 : 0
         }}
       />
       <div 
         ref={ref} 
-        className="" 
-        style={{
-          height: "100vh",
-          width: "calc((100vh*16)/9)"
-        }}
+        className="absolute w-[1920px] h-[1080px]" 
+        // style={{
+        //   height: "100vh",
+        //   width: "calc((100vh*16)/9)",
+        //   marginLeft: "-50vh"
+        // }}
       />
-      {muted && <button onClick={handleMute} className="absolute uppercase text-white font-bold bottom-0 right-0 m-16 px-1 pointer-events-auto">
+      {muted && <button onClick={handleMute} className="absolute uppercase text-sm text-white font-bold bottom-0 left-1/2 -translate-x-1/2 mb-4 px-1 pointer-events-auto">
         Unmute
       </button>}
     </div>

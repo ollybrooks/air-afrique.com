@@ -11,7 +11,7 @@ export default function Index({ general, home }: { general: any, home: any }) {
       <div 
         className={"fixed top-0 left-0 w-full h-full z-50 flex flex-col justify-center items-center pointer-events-none"}
       >
-        <div className={`text-white title uppercase text-2xl md:text-4xl`}>
+        <div className={`text-white title uppercase text-lg md:text-2xl`}>
           Bienvenu À Bord
         </div>
         <svg 
@@ -31,7 +31,7 @@ export default function Index({ general, home }: { general: any, home: any }) {
           <path d="M536.968 97.4232L553.99 34.4896H598L593.911 49.6037H565.814L563.477 58.2423H591.569L589.536 65.7816L587.48 73.354H559.388L556.959 82.3164H585.056L580.972 97.4256H536.968V97.4232Z" fill="#009035"/>
         </svg>
         <Link href="/home" className="pointer-events-auto">
-          <button className="text-white text-lg font-bold mt-4">
+          <button className="text-white text-sm font-bold mt-4 uppercase">
             Click to enter
           </button>
         </Link>
