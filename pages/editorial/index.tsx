@@ -42,7 +42,7 @@ export default function Editorial({ articles, general, editorial, museum }: { ar
               href={`/editorial/${hero.slug}`}
               onClick={(e) => handleItemClick(e, hero.slug)}
             >
-              <div className="text-3xl font-medium uppercase title p-4 md:p-0">
+              <div className="text-3xl font-medium uppercase title px-4 pb-4 md:p-0">
                 {hero.title}
               </div>
             </Link>
