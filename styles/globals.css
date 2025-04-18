@@ -38,11 +38,11 @@ body {
 
 /* Tailwind Overrides */
 .text-2xl {
-  line-height: 1.6;
+  line-height: 1.6rem;
 }
 
 .text-3xl {
-  line-height: 2.1;
+  line-height: 2.1rem;
 }
 
 main {
