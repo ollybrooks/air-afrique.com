@@ -70,7 +70,7 @@ export default function ProductPage({ product, general }: ProductPageProps) {
         </div>
         <div 
           // ref={imagesContainerRef} 
-          className="fixed top-0 left-0 w-full h-[55%] md:h-auto md:relative flex flex-col justify-end md:justify-center items-center md:py-24 overflow-y-hidden md:overflow-y-scroll bg-white border-b border-black md:border-b-0"
+          className="fixed top-0 left-0 w-full h-[55%] md:h-auto md:relative flex flex-col justify-start items-center md:py-24 overflow-y-hidden md:overflow-y-scroll bg-white border-b border-black md:border-b-0"
         >
           {product.images.map((image: any, index: any) => (
             <div 
@@ -101,7 +101,7 @@ export default function ProductPage({ product, general }: ProductPageProps) {
                 <button 
                   key={variant.id} 
                   onClick={() => handleVariant(variant)} 
-                  className={`p-4 ${selectedVariant.id === variant.id ? 'underline' : ''} ${
+                  className={`p-4 md:p-4 px-4 py-1 md:py-4 ${selectedVariant.id === variant.id ? 'underline' : ''} ${
                     !variant.available ? 'opacity-50 cursor-not-allowed' : ''
                   }`}
                   disabled={!variant.available}
