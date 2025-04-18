@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function Tint() {
   const [devTime, setDevTime] = React.useState<number | null>(null);
+  const [clientTime, setClientTime] = useState(null);
   
   // DEV MODE: Cycle through 24 hours in 1 minute (2.5 seconds per hour)
   // React.useEffect(() => {
@@ -20,8 +21,8 @@ export default function Tint() {
 
   // Get current hour and minutes for precise time
   const now = new Date();
-  const hour = now.getHours();
-  const minute = now.getMinutes();
+  const hour = clientTime ? clientTime.getHours() : 12; // Default to noon/day if client time not yet available
+  const minute = clientTime ? clientTime.getMinutes() : 0;
   const timeAsDecimal = devTime ?? (hour + minute / 60);
 
   // console.log(timeAsDecimal);
@@ -118,6 +119,18 @@ export default function Tint() {
 
     return currentGradient?.gradient ?? currentGradients[0].gradient;
   };
+
+  // Update time only on client side
+  useEffect(() => {
+    setClientTime(new Date());
+    
+    // Optional: Set up interval to update time periodically
+    const interval = setInterval(() => {
+      setClientTime(new Date());
+    }, 60000); // Update every minute
+    
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div 
