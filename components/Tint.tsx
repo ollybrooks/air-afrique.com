@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 export default function Tint() {
   const [devTime, setDevTime] = React.useState<number | null>(null);
-  const [clientTime, setClientTime] = useState(null);
+  const [clientTime, setClientTime] = useState<Date | null>(null);
   
   // DEV MODE: Cycle through 24 hours in 1 minute (2.5 seconds per hour)
   // React.useEffect(() => {
