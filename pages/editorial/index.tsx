@@ -71,7 +71,7 @@ export default function Editorial({ articles, general, editorial, museum }: { ar
           </div>
           <div className="p-4 md:p-0">
             <p className="serif leading-[18.5px]">{hero.summary}</p>
-            <p className="futura text-sm uppercase mt-2">{hero.credits}</p>
+            <p className="futura text-sm uppercase mt-4">{hero.credits}</p>
             <Link 
               href={`/editorial/${hero.slug}`} 
               className="text-xs uppercase font-medium text-[var(--red)] tracking-wider mt-8 block md:hidden"
@@ -142,7 +142,7 @@ function Item({ article, index, handleItemClick }: { article: any, index: number
       <div className={`md:absolute bottom-0 left-0 w-full h-full ${backgroundColour} p-8 ${showDescription || !article.heroImage ? 'opacity-100' : 'md:opacity-0'}`}>
         <div className="border border-black w-full h-full p-6 md:p-12 flex flex-col justify-center items-start">
           {article.issue && <div className={`mb-4 futura uppercase bg-black ${textColour}`}>Issue {('0' + article.issue).slice(-2)}</div>}
-          <div className="text-2xl md:text-4xl font-medium uppercase title">{article.title}</div>
+          <div className="text-2xl md:text-4xl font-medium uppercase title mb-1">{article.title}</div>
           <div className="text-sm futura uppercase">{article.credits}</div>
           <button className="text-sm uppercase font-medium mt-4 tracking-wider">Read More</button>
         </div>

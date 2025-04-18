@@ -36,6 +36,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Tailwind Overrides */
+.text-2xl {
+  line-height: 1.6;
+}
+
+.text-3xl {
+  line-height: 2.1;
+}
+
 main {
   @apply px-6 py-24;
 }
@@ -84,7 +93,7 @@ nav {
 
 .futura {
   font-family: "FuturaBook", "Futura", sans-serif;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.035em;
   line-height: 1.2;
 }
 

@@ -96,7 +96,7 @@ export default function ProductPage({ product, general }: ProductPageProps) {
             <div>€{Number(selectedVariant.price.amount).toFixed(2)}</div>
           </div>
           {product.variants.length > 1 && (
-            <div className="w-[calc(100%+32px)] flex justify-between serif text-xl md:text-[28px] font-bold -ml-4 mb-2 md:-mb-4 md:mt-0 px-4 md:p-0">
+            <div className="w-[calc(100%+32px)] flex justify-between serif text-xl md:text-[28px] font-bold -ml-4 mb-1 md:-mb-4 md:mt-0 px-4 md:p-0">
               {product.variants.map((variant: any) => (
                 <button 
                   key={variant.id} 
