@@ -121,7 +121,7 @@ export default function About({ data, general }: { data: any, general: any }) {
               </div>
               {data.team.map((item: any) => (
                 item.link ? (
-                  <a href={item.link} key={item.name}>
+                  <a href={item.link} key={item.name} target="_blank" rel="noopener noreferrer">
                     <div>
                       <p className="uppercase text-xs md:text-xl">{item.title}</p>
                       <p className="font-medium text-base md:text-3xl tracking-[-0.01em]">{item.name}</p>
