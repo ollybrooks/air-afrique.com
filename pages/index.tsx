@@ -12,7 +12,7 @@ export default function Index({ general, home }: { general: any, home: any }) {
         className={"fixed top-0 left-0 w-full h-full z-50 flex flex-col justify-center items-center pointer-events-none"}
       >
         <div className={`text-white title uppercase text-lg md:text-2xl`}>
-          Bienvenu À Bord
+          Bienvenue À Bord
         </div>
         <svg 
           className={`h-12`} viewBox="0 0 598 108" fill="none" xmlns="http://www.w3.org/2000/svg"
