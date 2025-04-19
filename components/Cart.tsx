@@ -55,7 +55,7 @@ export default function Cart({ setCartOpen }: { setCartOpen: any }) {
           <div className="relative text-3xl font-medium text-center">Cart</div>
         }
         {/* Items */}
-        {items.length > 0 && <div className="relative flex flex-col max-h-[40vh] md:max-h-[55vh] overflow-y-scroll overflow-x-hidden gap-8 my-8 font-medium text-xs md:text-sm leading-tight">
+        {items.length > 0 && <div className="relative flex flex-col max-h-[40vh] md:max-h-[55vh] overflow-y-scroll overflow-x-hidden gap-4 my-8 font-medium text-xs md:text-sm leading-tight">
           {items.map((item, index) => (
             <div className="flex gap-4" key={index}>
               <div className="aspect-square w-1/3">
