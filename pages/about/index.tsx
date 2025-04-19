@@ -1,6 +1,6 @@
 import Layout from "@/components/Layout";
 import { getAbout, getGeneral } from "@/sanity/utils";
-import { PortableText } from "@portabletext/react";
+import { PortableText, PortableTextComponents } from "@portabletext/react";
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -65,6 +65,16 @@ export default function About({ data, general }: { data: any, general: any }) {
     }
   }
 
+  const components: PortableTextComponents = {
+    block: ({ children, value = {} }) => {
+      // Check if children is an empty array or contains only whitespace
+      if (Array.isArray(children) && children.every(child => typeof child === 'string' && child.trim() === '')) {
+        return <br/>;
+      }
+      return <p>{children}</p>;
+    },
+  }
+
   return(
     <Layout metadata={general}>
       <div 
@@ -92,7 +102,7 @@ export default function About({ data, general }: { data: any, general: any }) {
           ))}
         </div>
         <div className="relative text-center text-xl md:text-4xl font-medium tracking-[-0.01em] select-none max-w-5xl mx-auto mt-[30vh] px-4 md:px-0">
-          <PortableText value={data.content} />
+          <PortableText value={data.content} components={components} />
         </div>
         {!readMore && <button onClick={(e) => {
           e.stopPropagation();
@@ -103,7 +113,7 @@ export default function About({ data, general }: { data: any, general: any }) {
         {readMore && (
           <>
             <div className="relative text-center text-xl md:text-4xl font-medium tracking-[-0.01em] select-none max-w-5xl mx-auto mt-8 md:mt-12 px-4 md:px-0">
-              <PortableText value={data.readMore} />
+              <PortableText value={data.readMore} components={components} />
             </div>
             <div className="relative flex flex-col gap-4 md:gap-8 my-36 text-center items-center select-none">
               <div className="text-xl md:text-4xl font-medium uppercase tracking-[-0.01em]">
