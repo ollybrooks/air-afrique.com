@@ -124,7 +124,7 @@ nav {
 }
 
 .cart {
-  @apply fixed top-0 right-0 z-20 h-screen w-full p-6 pt-16 lg:pt-24 flex items-start justify-center gap-4 text-xl;
+  @apply fixed top-0 right-0 z-20 h-screen w-full p-6 pt-20 lg:pt-24 flex items-start justify-center gap-4 text-xl;
   -webkit-overflow-scrolling: touch;
 
   .modal {
