@@ -1,6 +1,6 @@
 import { useCart } from "@/context/cart";
 import Tint from "./Tint";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 
 export default function Cart({ setCartOpen }: { setCartOpen: any }) {
@@ -9,6 +9,28 @@ export default function Cart({ setCartOpen }: { setCartOpen: any }) {
 
   const [loadingCheckout, setLoadingCheckout] = useState(false);
   const [checkoutError, setCheckoutError] = useState(false);
+
+  const itemsContainerRef = useRef<HTMLDivElement>(null);
+  
+  const handleTouchStart = (e: any) => {
+    // Prevent touch events from propagating to parent elements
+    e.stopPropagation();
+  };
+
+  const handleTouchMove = (e: any) => {
+    // Prevent the default behavior (page scrolling) only when scrolling the items
+    e.stopPropagation();
+    // This prevents the page from scrolling while scrolling inside the cart
+    if (itemsContainerRef.current && itemsContainerRef.current.contains(e.target)) {
+      // Only prevent default if we're at the top or bottom boundary and trying to scroll further
+      const container = itemsContainerRef.current;
+      const atTop = container.scrollTop === 0;
+      const atBottom = container.scrollHeight - container.scrollTop === container.clientHeight;
+      
+      // Let scrolling work freely inside the container without affecting the page
+      e.stopPropagation();
+    }
+  };
 
   const handleCheckout = async () => {
     if (items.length === 0) {
@@ -55,7 +77,13 @@ export default function Cart({ setCartOpen }: { setCartOpen: any }) {
           <div className="relative text-3xl font-medium text-center">Cart</div>
         }
         {/* Items */}
-        {items.length > 0 && <div className="relative flex flex-col max-h-[40vh] md:max-h-[55vh] overflow-y-scroll overflow-x-hidden gap-4 my-8 font-medium text-xs md:text-sm leading-tight">
+        {items.length > 0 && <div 
+          className="relative flex flex-col max-h-[40vh] md:max-h-[55vh] overflow-y-scroll overflow-x-hidden gap-4 my-8 font-medium text-xs md:text-sm leading-tight"
+          style={{ WebkitOverflowScrolling: 'touch' }}
+          ref={itemsContainerRef}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+        >
           {items.map((item, index) => (
             <div className="flex gap-4" key={index}>
               <div className="aspect-square w-1/3">
