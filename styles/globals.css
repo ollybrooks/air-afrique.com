@@ -124,7 +124,7 @@ nav {
 }
 
 .cart {
-  @apply fixed top-0 right-0 z-20 h-screen w-full p-6 pt-24 flex items-center md:items-start justify-center gap-4 text-xl;
+  @apply fixed top-0 right-0 z-20 h-screen w-full p-6 pt-16 md:pt-24 flex items-center md:items-start justify-center gap-4 text-xl;
 
   .modal {
     @apply relative bg-white bg-opacity-30 backdrop-blur-lg w-full h-auto max-w-sm rounded-xl p-6 overflow-auto;
