@@ -20,15 +20,13 @@ export default function Cart({ setCartOpen }: { setCartOpen: any }) {
   const handleTouchMove = (e: any) => {
     // Prevent the default behavior (page scrolling) only when scrolling the items
     e.stopPropagation();
+    
     // This prevents the page from scrolling while scrolling inside the cart
     if (itemsContainerRef.current && itemsContainerRef.current.contains(e.target)) {
-      // Only prevent default if we're at the top or bottom boundary and trying to scroll further
-      const container = itemsContainerRef.current;
-      const atTop = container.scrollTop === 0;
-      const atBottom = container.scrollHeight - container.scrollTop === container.clientHeight;
-      
-      // Let scrolling work freely inside the container without affecting the page
-      e.stopPropagation();
+      // Allow scrolling within the container
+    } else {
+      // Prevent scrolling on other parts of the modal
+      e.preventDefault();
     }
   };
 
@@ -69,7 +67,17 @@ export default function Cart({ setCartOpen }: { setCartOpen: any }) {
 
   return(
     <div className="cart" onClick={() => setCartOpen(false)}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
+      <div 
+        className="modal" 
+        onClick={(e) => e.stopPropagation()}
+        onTouchStart={(e) => e.stopPropagation()}
+        onTouchMove={(e) => {
+          e.stopPropagation();
+          if (!itemsContainerRef.current || !itemsContainerRef.current.contains(e.target as Node)) {
+            e.preventDefault();
+          }
+        }}
+      >
         <Tint />
         {/* Header */}
         {items.length <= 0 ? 
@@ -78,8 +86,12 @@ export default function Cart({ setCartOpen }: { setCartOpen: any }) {
         }
         {/* Items */}
         {items.length > 0 && <div 
-          className="relative flex flex-col max-h-[40vh] md:max-h-[55vh] overflow-y-scroll overflow-x-hidden gap-4 my-8 font-medium text-xs md:text-sm leading-tight"
-          style={{ WebkitOverflowScrolling: 'touch' }}
+          className="relative flex flex-col max-h-[40vh] md:max-h-[55vh] overflow-y-auto overflow-x-hidden gap-4 my-8 font-medium text-xs md:text-sm leading-tight"
+          style={{ 
+            WebkitOverflowScrolling: 'touch', 
+            scrollbarWidth: 'none',
+            overscrollBehavior: 'contain'
+          }}
           ref={itemsContainerRef}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
