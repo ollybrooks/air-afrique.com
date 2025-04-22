@@ -28,6 +28,21 @@ export default function Layout({
         <meta name="twitter:description" content={metadata.description} />
         <meta name="twitter:image" content={metadata.shareImage} />
         <link rel="icon" href="/favicon.ico" />
+        {/* WEBSITE BY */}
+        {/* ,________________________________ */}
+        {/* |  ┌─────────────────────────────┐\*/}  
+        {/* |  │  ┌──────┬──────┬────—──┬─────┐│*/}
+        {/* |  │  │█████████████████████│ │---||*/}
+        {/* |  │  │████╔════════════╗███│ │---||*/} 
+        {/* |  │  │████║----LEFT----║███│ │---||*/}
+        {/* |  │  │████╚════════════╝███│ │---||*/}
+        {/* |  │  │█████████████████████│ │---||*/}
+        {/* |  │  └──────┬──────┬────—──┘ │---||*/}
+        {/* |  └─────────────────────────────┘|*/}
+        {/* |________________________________/*/}
+        
+        {/* WWW.LEFT.SYSTEMS */}
+        {/* DIGITAL IMAGING STUDIO */}
       </Head>
       <main>
         <Nav cartControl={setCartOpen} menuItems={metadata.menuItems} />
