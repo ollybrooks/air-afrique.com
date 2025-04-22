@@ -14,7 +14,7 @@ export default function Layout({
   return(
     <>
       <Head>
-    {/* <!-- WEBSITE BY  -->
+    <!-- WEBSITE BY  -->
     <!-- ,________________________________ -->
     <!-- |  ┌─────────────────────────────┐\-->  
     <!-- |  │  ┌──────┬──────┬────—──┬─────┐│-->
@@ -28,7 +28,7 @@ export default function Layout({
     <!-- |________________________________/-->
     
     <!-- WWW.LEFT.SYSTEMS  -->
-    <!-- DIGITAL IMAGING STUDIO  -->  */}
+    <!-- DIGITAL IMAGING STUDIO  --> 
         <title>{metadata.title}</title>
         <meta name="description" content={metadata.description} />
         <meta name="keywords" content={metadata.keywords} />
